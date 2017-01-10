@@ -14,7 +14,7 @@ class WebViewController: CenterViewController {
   @IBOutlet weak var ibActivityIndicator: UIActivityIndicatorView!
   @IBOutlet weak var ibWebView: UIWebView!
   
-  var URL: NSURL?
+  var URL: Foundation.URL?
   var navTitle: String?
   
   //MARK: Initialization
@@ -22,7 +22,7 @@ class WebViewController: CenterViewController {
     self.init(title: "", URL: nil)
   }
   
-  init(title: String?, URL: NSURL?){
+  init(title: String?, URL: Foundation.URL?){
     super.init(nibName: nil, bundle: nil)
     self.URL = URL
     self.navTitle = title
@@ -33,11 +33,11 @@ class WebViewController: CenterViewController {
     super.init(nibName: nil, bundle: nil)
     
     if let ressourceName = howToNotificationType.howToRessourcePathName,
-      url = NSBundle.mainBundle().pathForResource(ressourceName,
+      let url = Bundle.main.path(forResource: ressourceName,
         ofType: "html",
         inDirectory: Config.defaultHTMLHowToDir)
     {
-      self.URL = NSURL(fileURLWithPath: url)
+      self.URL = Foundation.URL(fileURLWithPath: url)
     }
     self.navTitle = howToNotificationType.howTitle
   }
@@ -53,7 +53,7 @@ class WebViewController: CenterViewController {
     self.title = navTitle
     
     if let URL = self.URL{
-      self.ibWebView.loadRequest(NSURLRequest(URL: URL))
+      self.ibWebView.loadRequest(URLRequest(url: URL))
     }
   }
   
@@ -71,15 +71,15 @@ class WebViewController: CenterViewController {
 //MARK: UIWebViewDelegate
 extension WebViewController: UIWebViewDelegate {
   
-  func webViewDidStartLoad(webView: UIWebView) {
+  func webViewDidStartLoad(_ webView: UIWebView) {
     self.ibActivityIndicator.startAnimating()
   }
   
-  func webViewDidFinishLoad(webView: UIWebView) {
+  func webViewDidFinishLoad(_ webView: UIWebView) {
     self.ibActivityIndicator.stopAnimating()
   }
   
-  func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
+  func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
     self.ibActivityIndicator.stopAnimating()
   }
   

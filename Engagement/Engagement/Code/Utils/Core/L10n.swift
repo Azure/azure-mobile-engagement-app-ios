@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  L10n.swift
 //  Engagement
 //
 //  Created by Microsoft on 08/02/2016.
@@ -20,7 +20,7 @@ struct L10n {
    
    - returns: Localizable String
    */
-  static func tr(key: String, _ args: CVarArgType...) -> String {
+  static func tr(_ key: String, _ args: CVarArg...) -> String {
     let format = NSLocalizedString(key, comment: "")
     return String(format: format, arguments: args)
   }

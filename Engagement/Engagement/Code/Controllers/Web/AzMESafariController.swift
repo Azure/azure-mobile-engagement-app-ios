@@ -14,7 +14,7 @@ class AzMESafariController: SFSafariViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.view.tintColor = UIColor(named: UIColor.Name.PrimaryTheme)
+    self.view.tintColor = UIColor(named: UIColor.Name.primaryTheme)
     
   }
 }

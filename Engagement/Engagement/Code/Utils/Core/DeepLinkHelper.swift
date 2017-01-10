@@ -35,12 +35,12 @@ struct DeepLinkHelper{
    
    - returns: Return true if any action can be perfomed by the app
    */
-  static func canManage(url: NSURL) -> Bool
+  static func canManage(_ url: URL) -> Bool
   {
     if url.scheme == "http"
     {
-      let controller = AzMESafariController(URL: url)
-      self.rootNavigationViewController()?.presentViewController(controller, animated: true, completion: nil)
+      let controller = AzMESafariController(url: url)
+      self.rootNavigationViewController()?.present(controller, animated: true, completion: nil)
     }
     else if url.path == recentUpdatesDeepLink
     {
@@ -63,24 +63,24 @@ struct DeepLinkHelper{
    
    - parameter userInfo: The content of the local notification received
    */
-  static func manageLocalNotification(userInfo: [NSObject : AnyObject]?)
+  static func manageLocalNotification(_ userInfo: [AnyHashable: Any]?)
   {
     
     if let userInfo = userInfo,
-      type = userInfo[AzMELocalNotification.keyNotificationType] as? String,
-      notificationType = AzMELocalNotification(rawValue: type)
+      let type = userInfo[AzMELocalNotification.keyNotificationType] as? String,
+      let notificationType = AzMELocalNotification(rawValue: type)
     {
       switch notificationType
       {
       case .DeepLink:
         if let linkString = userInfo[AzMELocalNotification.keyNotificationLink] as? String,
-          let URL = NSURL(string: linkString)
+          let URL = URL(string: linkString)
         {
           DeepLinkHelper.canManage(URL)
         }
         break
       case .WebAnnouncement:
-        if let content = userInfo[AzMELocalNotification.keyNotificationContent] as? [NSObject : AnyObject]{
+        if let content = userInfo[AzMELocalNotification.keyNotificationContent] as? [AnyHashable: Any]{
           
           var fakeAnnouncement = AnnouncementViewModel()
           fakeAnnouncement.title = content["title"] as? String
@@ -90,9 +90,9 @@ struct DeepLinkHelper{
           fakeAnnouncement.action =
             {
               if let linkString = userInfo[AzMELocalNotification.keyNotificationLink] as? String,
-                let URL = NSURL(string: linkString)
+                let URL = URL(string: linkString)
               {
-                self.rootNavigationViewController()?.dismissViewControllerAnimated(true,
+                self.rootNavigationViewController()?.dismiss(animated: true,
                   completion: { () -> Void in
                     DeepLinkHelper.canManage(URL)
                 })
@@ -102,13 +102,13 @@ struct DeepLinkHelper{
           let controller = UINavigationController(rootViewController: AnnouncementViewController(announcement: fakeAnnouncement,
             isLocal: true))
           
-          self.rootNavigationViewController()?.presentViewController(controller,
+          self.rootNavigationViewController()?.present(controller,
             animated: true,
             completion: nil)
           
         }
       case .Fullscreen:
-        if let content = userInfo[AzMELocalNotification.keyNotificationContent] as? [NSObject : AnyObject]{
+        if let content = userInfo[AzMELocalNotification.keyNotificationContent] as? [AnyHashable: Any]{
           
           var fakeAnnouncement = AnnouncementViewModel()
           fakeAnnouncement.title = content["title"] as? String
@@ -118,9 +118,9 @@ struct DeepLinkHelper{
           fakeAnnouncement.action =
             {
               if let linkString = userInfo[AzMELocalNotification.keyNotificationLink] as? String,
-                let URL = NSURL(string: linkString)
+                let URL = URL(string: linkString)
               {
-                self.rootNavigationViewController()?.dismissViewControllerAnimated(true,
+                self.rootNavigationViewController()?.dismiss(animated: true,
                   completion: { () -> Void in
                     DeepLinkHelper.canManage(URL)
                 })
@@ -134,9 +134,9 @@ struct DeepLinkHelper{
           
           controller.providesPresentationContextTransitionStyle = true
           controller.definesPresentationContext = true
-          controller.modalPresentationStyle = UIModalPresentationStyle.CurrentContext
-          controller.view.backgroundColor = UIColor(named: UIColor.Name.PrimaryTheme)
-          self.rootNavigationViewController()?.presentViewController(controller,
+          controller.modalPresentationStyle = UIModalPresentationStyle.currentContext
+          controller.view.backgroundColor = UIColor(named: UIColor.Name.primaryTheme)
+          self.rootNavigationViewController()?.present(controller,
             animated: true,
             completion: nil)
         }
@@ -154,7 +154,7 @@ struct DeepLinkHelper{
    - parameter announcement: The Announcement View Model which contains deep link and notifications informations
    - parameter inController: The controller where the in-app notification view have to be displayed
    */
-  static func displayLocalInAppNotification(announcement: AnnouncementViewModel, inController: UIViewController){
+  static func displayLocalInAppNotification(_ announcement: AnnouncementViewModel, inController: UIViewController){
     
     let notificationView = AzMEInAppNotificationView(announcement: announcement)
     notificationView.alpha = 0
@@ -164,14 +164,14 @@ struct DeepLinkHelper{
     let trailing = "H:|-0-[notificationView]-0-|"
     let vertical = "V:[notificationView(>=55)]-0-|"
     
-    let trailingConstraint = NSLayoutConstraint.constraintsWithVisualFormat(
-      trailing,
+    let trailingConstraint = NSLayoutConstraint.constraints(
+      withVisualFormat: trailing,
       options: [],
       metrics: nil,
       views: ["notificationView" : notificationView])
     
-    let toBottomConstraint = NSLayoutConstraint.constraintsWithVisualFormat(
-      vertical,
+    let toBottomConstraint = NSLayoutConstraint.constraints(
+      withVisualFormat: vertical,
       options: [],
       metrics: nil,
       views: ["notificationView" : notificationView])
@@ -184,9 +184,9 @@ struct DeepLinkHelper{
     notificationView.layoutIfNeeded()
     notificationView.applyShadow()
     
-    UIView.animateWithDuration(0.3) { () -> Void in
+    UIView.animate(withDuration: 0.3, animations: { () -> Void in
       notificationView.alpha = 1
-    }
+    }) 
   }
   
   /**
@@ -194,7 +194,7 @@ struct DeepLinkHelper{
    
    - parameter controller: ViewController to be pushed
    */
-  static func pushViewController(controller: UIViewController){
+  static func pushViewController(_ controller: UIViewController){
     self.rootNavigationViewController()?.pushViewController(controller, animated: true)
   }
   
@@ -203,8 +203,8 @@ struct DeepLinkHelper{
    
    - parameter controller: ViewController to be modally presented
    */
-  static func presentViewController(controller: UIViewController, animated: Bool){
-    self.rootNavigationViewController()?.presentViewController(controller, animated: animated, completion: nil)
+  static func presentViewController(_ controller: UIViewController, animated: Bool){
+    self.rootNavigationViewController()?.present(controller, animated: animated, completion: nil)
   }
   
   /**
@@ -214,10 +214,10 @@ struct DeepLinkHelper{
    */
   static func rootNavigationViewController() -> UINavigationController?
   {
-    if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate,
-      rootController = appDelegate.window?.rootViewController as? UINavigationController,
-      drawer = rootController.viewControllers.first as? MMDrawerController,
-      rootNav = drawer.centerViewController as? UINavigationController
+    if let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+      let rootController = appDelegate.window?.rootViewController as? UINavigationController,
+      let drawer = rootController.viewControllers.first as? MMDrawerController,
+      let rootNav = drawer.centerViewController as? UINavigationController
     {
       return rootNav
     }

@@ -25,7 +25,7 @@ struct MenuItem {
   
   //MARK - Initialisations
   init(title: String?, icon: AzIcon, isSelectable: Bool = true){
-    self.icon = icon.imageWithSize(CGSize(width: defaultMenuImageWidth, height: defaultMenuImageWidth)).imageWithRenderingMode(.AlwaysTemplate)
+    self.icon = icon.image(with: CGSize(width: defaultMenuImageWidth, height: defaultMenuImageWidth)).withRenderingMode(.alwaysTemplate)
     self.title = title
     self.isSelectable = isSelectable
   }
@@ -48,7 +48,7 @@ struct MenuItem {
    
    - returns: Array of MenuItem
    */
-  static func helpfulLinksFromMenuController(controller: MenuViewController) -> [MenuItem] {
+  static func helpfulLinksFromMenuController(_ controller: MenuViewController) -> [MenuItem] {
     let documentationItem = MenuItem(title: L10n.tr("helpful.link.documentation"),
       icon: AzIcon.iconDocumentation(),
       selectedCompletion: {
@@ -99,12 +99,12 @@ struct MenuItem {
    
    - returns: An array of section|items tuple
    */
-  static func defaultDataSoruceFromMenuController(controller: MenuViewController) -> [(sectionName: String, items: [MenuItem])]{
+  static func defaultDataSoruceFromMenuController(_ controller: MenuViewController) -> [(sectionName: String, items: [MenuItem])]{
     
     var dataSource = [(sectionName: String, items: [MenuItem])]()
     // Home section
     let homeItem = MenuItem(title: L10n.tr("menu.home.title"),
-      icon: AzIcon.iconMenuHome(defaultMenuImageWidth),
+      icon: AzIcon.iconMenuHome(),
       initViewController: {return HomeViewController()})
     
     dataSource.append(("", [homeItem]))
@@ -113,7 +113,7 @@ struct MenuItem {
     let featuresItem = MenuItem(title: L10n.tr("menu.features.title"),
       icon: AzIcon.iconMenuFeatures(defaultMenuImageWidth),
       initViewController: {return WebViewController(title: L10n.tr("menu.features.title"),
-        URL: NSURL(string: Config.URLs.features))})
+        URL: URL(string: Config.URLs.features))})
     
     let videosItem = MenuItem(title: L10n.tr("menu.videos.title"),
       icon: AzIcon.iconMenuVideos(defaultMenuImageWidth),
@@ -157,31 +157,31 @@ struct MenuItem {
     // Notification scenarios section
     let outOfAppItem = MenuItem(title: L10n.tr("menu.out.of.app.title"),
       icon: AzIcon.iconMenuOutApp(defaultMenuImageWidth),
-      initViewController: {return NotificationsViewController(notifScreen: ScreenType.OutOfApp)})
+      initViewController: {return NotificationsViewController(notifScreen: ScreenType.outOfApp)})
     
     let inAppItem = MenuItem(title: L10n.tr("menu.in.app.title"),
       icon: AzIcon.iconMenuInApp(defaultMenuImageWidth),
-      initViewController: {return NotificationsViewController(notifScreen: ScreenType.InApp)})
+      initViewController: {return NotificationsViewController(notifScreen: ScreenType.inApp)})
     
     let inAppPopUpItem = MenuItem(title: L10n.tr("menu.in.app.pop.up.title"),
       icon: AzIcon.iconMenuPopUp(defaultMenuImageWidth),
-      initViewController: {return NotificationsViewController(notifScreen: ScreenType.InAppPopUp)})
+      initViewController: {return NotificationsViewController(notifScreen: ScreenType.inAppPopUp)})
     
     let webAnnouncementItem = MenuItem(title: L10n.tr("menu.web.announcement.title"),
       icon: AzIcon.iconMenuFullScreen(defaultMenuImageWidth),
-      initViewController: {return NotificationsViewController(notifScreen: ScreenType.WebAnnouncement)})
+      initViewController: {return NotificationsViewController(notifScreen: ScreenType.webAnnouncement)})
     
     let fullscreenItem = MenuItem(title: L10n.tr("menu.full.screen.title"),
       icon: AzIcon.iconMenuFullScreen(defaultMenuImageWidth),
-      initViewController: {return NotificationsViewController(notifScreen: ScreenType.FullScreen)})
+      initViewController: {return NotificationsViewController(notifScreen: ScreenType.fullScreen)})
     
     let pollItem = MenuItem(title: L10n.tr("menu.poll.title"),
       icon: AzIcon.iconMenuPoll(defaultMenuImageWidth),
-      initViewController: {return NotificationsViewController(notifScreen: ScreenType.Poll)})
+      initViewController: {return NotificationsViewController(notifScreen: ScreenType.poll)})
     
     var dataPushItem = MenuItem(title: L10n.tr("menu.data.push.title"),
       icon: AzIcon.iconMenuDataPush(defaultMenuImageWidth),
-      initViewController: {return NotificationsViewController(notifScreen: ScreenType.DataPush)})
+      initViewController: {return NotificationsViewController(notifScreen: ScreenType.dataPush)})
     dataPushItem.separator = true
     
     var aboutItem = MenuItem(title: L10n.tr("menu.about.title"),

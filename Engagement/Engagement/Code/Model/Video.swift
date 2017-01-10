@@ -20,7 +20,7 @@ struct Video {
   var videoUrl: String?
   var isEmbed = false
   
-  static func parseFromJSONElement(json: JSON) -> Video
+  static func parseFromJSONElement(_ json: JSON) -> Video
   {
     var video = Video()
     video.title = json["title"].stringValue

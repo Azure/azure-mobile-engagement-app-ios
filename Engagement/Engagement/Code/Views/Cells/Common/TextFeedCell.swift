@@ -25,35 +25,35 @@ class TextFeedCell: UITableViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     
-    self.ibFeedContentView.layer.borderColor = UIColor(named: UIColor.Name.PrimaryTextPressed).CGColor
+    self.ibFeedContentView.layer.borderColor = UIColor(named: UIColor.Name.primaryTextPressed).cgColor
     self.ibFeedContentView.layer.borderWidth = 1
     
     self.ibMainTitle.font = UIFont(named: UIFont.AppFont.Medium, size: 15)
-    self.ibMainTitle.textColor = UIColor(named: UIColor.Name.GeneralText)
+    self.ibMainTitle.textColor = UIColor(named: UIColor.Name.generalText)
     
     self.ibSubTitle.font = UIFont(named: UIFont.AppFont.Regular, size: 13)
-    self.ibSubTitle.textColor = UIColor(named: UIColor.Name.SmallMentions)
+    self.ibSubTitle.textColor = UIColor(named: UIColor.Name.smallMentions)
     
     self.ibDescription.font = UIFont(named: UIFont.AppFont.Regular, size: 15)
-    self.ibDescription.textColor = UIColor(named: UIColor.Name.SecondaryText)
+    self.ibDescription.textColor = UIColor(named: UIColor.Name.secondaryText)
     
-    self.backgroundColor = UIColor(named: UIColor.Name.SecondaryGrey)
+    self.backgroundColor = UIColor(named: UIColor.Name.secondaryGrey)
   }
   
-  override func setSelected(selected: Bool, animated: Bool) {
+  override func setSelected(_ selected: Bool, animated: Bool) {
     
     if selected == true{
-      self.ibFeedContentView.backgroundColor = UIColor(named: UIColor.Name.SecondaryGrey)
+      self.ibFeedContentView.backgroundColor = UIColor(named: UIColor.Name.secondaryGrey)
     }else{
-      self.ibFeedContentView.backgroundColor = .whiteColor()
+      self.ibFeedContentView.backgroundColor = .white
     }
   }
   
-  override func setHighlighted(highlighted: Bool, animated: Bool) {
+  override func setHighlighted(_ highlighted: Bool, animated: Bool) {
     if highlighted == true{
-      self.ibFeedContentView.backgroundColor = UIColor(named: UIColor.Name.SecondaryGrey)
+      self.ibFeedContentView.backgroundColor = UIColor(named: UIColor.Name.secondaryGrey)
     }else{
-      self.ibFeedContentView.backgroundColor = .whiteColor()
+      self.ibFeedContentView.backgroundColor = .white
     }
   }
   
@@ -64,7 +64,7 @@ class TextFeedCell: UITableViewCell {
    - parameter subTitle:    SubTitle (the date for instance)
    - parameter description: News description
    */
-  func updateWith(title: String?, subTitle: String?, description: String?){
+  func updateWith(_ title: String?, subTitle: String?, description: String?){
     self.ibMainTitle.text = title
     self.ibSubTitle.text  = subTitle
     self.ibDescription.text  = description

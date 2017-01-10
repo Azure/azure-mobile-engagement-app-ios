@@ -27,13 +27,13 @@ class VideoCell: UITableViewCell {
     super.awakeFromNib()
     
     ibVideoTitle.font = UIFont(named: UIFont.AppFont.Regular, size: 18)
-    ibVideoTitle.textColor = UIColor(named: UIColor.Name.PrimaryTheme)
+    ibVideoTitle.textColor = UIColor(named: UIColor.Name.primaryTheme)
     
     ibVideoDescription.font = UIFont(named: UIFont.AppFont.Regular, size: 15)
-    ibVideoDescription.textColor = UIColor(named: UIColor.Name.SecondaryText)
+    ibVideoDescription.textColor = UIColor(named: UIColor.Name.secondaryText)
     
     ibSubContentView.layer.borderWidth = 1
-    ibSubContentView.layer.borderColor = UIColor(named: UIColor.Name.LightGrey).CGColor
+    ibSubContentView.layer.borderColor = UIColor(named: UIColor.Name.lightGrey).cgColor
   }
   
   override func prepareForReuse() {
@@ -49,32 +49,32 @@ class VideoCell: UITableViewCell {
    - parameter imageLink:  URL Image to download
    - parameter localImage: true if the URL image is in the App Assets
    */
-  func updateWith(title: String?, subTitle: String?, imageLink: String?, localImage: Bool = false)
+  func updateWith(_ title: String?, subTitle: String?, imageLink: String?, localImage: Bool = false)
   {
     self.ibVideoTitle.text = title
     self.ibVideoDescription.text = subTitle
-    if let imageName = imageLink where localImage == true
+    if let imageName = imageLink, localImage == true
     {
       self.ibVideoImage.image = UIImage(named: imageName)
     }
-    else if let link = imageLink, imageURL = NSURL(string: link)
+    else if let link = imageLink, let imageURL = URL(string: link)
     {
-      self.ibVideoImage.af_setImageWithURL(imageURL,
-        placeholderImage: nil,
-        imageTransition: UIImageView.ImageTransition.CrossDissolve(0.3))
+        
+        self.ibVideoImage.af_setImage(withURL: imageURL,
+                                      imageTransition: UIImageView.ImageTransition.crossDissolve(0.3))
     }
   }
   
-  override func setHighlighted(highlighted: Bool, animated: Bool) {
+  override func setHighlighted(_ highlighted: Bool, animated: Bool) {
     super.setHighlighted(highlighted, animated: animated)
     
     if (highlighted == true)
     {
-      self.ibSubContentView.backgroundColor = UIColor.lightGrayColor()
+      self.ibSubContentView.backgroundColor = UIColor.lightGray
     }
     else
     {
-      self.ibSubContentView.backgroundColor = UIColor.whiteColor()
+      self.ibSubContentView.backgroundColor = UIColor.white
     }
   }
   

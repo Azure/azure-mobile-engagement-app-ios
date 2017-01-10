@@ -26,12 +26,12 @@ class RecentUpdatesController: CenterViewController {
     
     self.title = L10n.tr("menu.recent.product.updates.title")
     
-    ibTableView.backgroundColor = UIColor(named: UIColor.Name.SecondaryGrey)
-    self.ibTableView.separatorStyle = .None
+    ibTableView.backgroundColor = UIColor(named: UIColor.Name.secondaryGrey)
+    self.ibTableView.separatorStyle = .none
     self.ibTableView.contentInset = UIEdgeInsetsMake(15, 0, 0, 0)
     self.ibTableView.estimatedRowHeight = 100
     self.ibTableView.rowHeight = UITableViewAutomaticDimension
-    self.ibTableView.registerNib(UINib(nibName: TextFeedCell.identifier, bundle: nil),
+    self.ibTableView.register(UINib(nibName: TextFeedCell.identifier, bundle: nil),
       forCellReuseIdentifier: TextFeedCell.identifier)
     
     UIApplication.showHUD()
@@ -42,29 +42,29 @@ class RecentUpdatesController: CenterViewController {
     }
   }
   
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
     if let selectedIndex = self.ibTableView.indexPathsForSelectedRows?.first{
-      self.ibTableView.deselectRowAtIndexPath(selectedIndex, animated: true)
+      self.ibTableView.deselectRow(at: selectedIndex, animated: true)
     }
     
-    UIApplication.setStatusBarStyle(UIStatusBarStyle.LightContent)
+    UIApplication.setStatusBarStyle(UIStatusBarStyle.lightContent)
   }
 }
 
 //MARK: UITableViewDelegate
 extension RecentUpdatesController: UITableViewDelegate{
-  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let updateItem = self.dataSource[indexPath.row]
     
-    if let link = updateItem.link, linkURL = NSURL(string: link){
+    if let link = updateItem.link, let linkURL = URL(string: link){
       AnalyticsMonitor.Events.RecentUpdates.clickArticle(updateItem.title, URL: link)
-      let safariController = AzMESafariController(URL: linkURL)
-      self.navigationController?.presentViewController(safariController,
+      let safariController = AzMESafariController(url: linkURL)
+      self.navigationController?.present(safariController,
         animated: true,
         completion: { () -> Void in
-          UIApplication.setStatusBarStyle(UIStatusBarStyle.Default)
+          UIApplication.setStatusBarStyle(UIStatusBarStyle.default)
       })
     }
   }
@@ -72,16 +72,16 @@ extension RecentUpdatesController: UITableViewDelegate{
 
 //MARK: UITableViewDataSource
 extension RecentUpdatesController: UITableViewDataSource{
-  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  func numberOfSections(in tableView: UITableView) -> Int {
     return 1
   }
   
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return self.dataSource.count
   }
   
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier(TextFeedCell.identifier, forIndexPath: indexPath) as! TextFeedCell
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: TextFeedCell.identifier, for: indexPath) as! TextFeedCell
     
     let updateItem = self.dataSource[indexPath.row]
     

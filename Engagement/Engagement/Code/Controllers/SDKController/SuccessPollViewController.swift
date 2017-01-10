@@ -19,20 +19,20 @@ class SuccessPollViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.view.backgroundColor = UIColor(named: UIColor.Name.PrimaryThemeLight)
+    self.view.backgroundColor = UIColor(named: UIColor.Name.primaryThemeLight)
     
     ibSuccessTitle.text = L10n.tr("new.poll.end.message")
     ibSuccessTitle.font = UIFont(named: UIFont.AppFont.Medium, size: 18)
-    ibCloseButton.setBackgroundImage(UIColor.imageWithColor(UIColor(named: UIColor.Name.SecondaryPurple)), forState: .Normal)
-    ibCloseButton.setTitle("Close", forState: .Normal)
+    ibCloseButton.setBackgroundImage(UIColor.imageWithColor(UIColor(named: UIColor.Name.secondaryPurple)), for: UIControlState())
+    ibCloseButton.setTitle("Close", for: UIControlState())
     self.navigationItem.hidesBackButton = true
     self.title = L10n.tr("new.poll.title")
     // Do any additional setup after loading the view.
   }
   
   //MARK: Actions
-  @IBAction func didTapCloseButton(sender: AnyObject) {
-    self.dismissViewControllerAnimated(true, completion: nil)
+  @IBAction func didTapCloseButton(_ sender: AnyObject) {
+    self.dismiss(animated: true, completion: nil)
   }
   
 }

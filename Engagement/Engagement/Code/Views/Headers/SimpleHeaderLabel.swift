@@ -16,13 +16,13 @@ import Foundation
  - SectionHeader: For Section View headers
  */
 enum HeaderViewType{
-  case TableHeader, SectionHeader
+  case tableHeader, sectionHeader
   
   func marginProperties() -> UIEdgeInsets{
     switch self{
-    case .TableHeader:
+    case .tableHeader:
       return  UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-    case .SectionHeader:
+    case .sectionHeader:
       return UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
     }
   }
@@ -51,12 +51,12 @@ class SimpleHeaderLabel: UIView{
   }
   
   func commonInit() {
-    NSBundle.mainBundle().loadNibNamed("SimpleHeaderLabel", owner: self, options: nil)
+    Bundle.main.loadNibNamed("SimpleHeaderLabel", owner: self, options: nil)
     self.frame = self.ibRootView.frame
     self.addSubview(self.ibRootView)
   }
   
-  private func updateType(headerType: HeaderViewType){
+  fileprivate func updateType(_ headerType: HeaderViewType){
     self.ibTopMargin.constant = headerType.marginProperties().top
     self.ibBottomMargin.constant = headerType.marginProperties().bottom
     self.ibLeftMargin.constant = headerType.marginProperties().left
@@ -70,13 +70,13 @@ class SimpleHeaderLabel: UIView{
    - parameter mainTitle:  Label title
    - parameter headerType: Section type configuration
    */
-  func update(font: UIFont?, mainTitle: String?, headerType: HeaderViewType){
+  func update(_ font: UIFont?, mainTitle: String?, headerType: HeaderViewType){
     self.ibTitle.font = font
     self.ibTitle.text = mainTitle
     self.updateType(headerType)
   }
   
-  func updateAttributed(title: NSAttributedString, headerType: HeaderViewType){
+  func updateAttributed(_ title: NSAttributedString, headerType: HeaderViewType){
     self.ibTitle.attributedText = title
     self.updateType(headerType)
   }
@@ -91,12 +91,12 @@ class SimpleHeaderLabel: UIView{
    
    - returns: The estimated height of the header (CGFloat)
    */
-  static func headerHeight(font: UIFont, forTitle: String, insideWidth: CGFloat, headerType: HeaderViewType) -> CGFloat
+  static func headerHeight(_ font: UIFont, forTitle: String, insideWidth: CGFloat, headerType: HeaderViewType) -> CGFloat
   {
     let size = CGSize(width: insideWidth - headerType.marginProperties().left - headerType.marginProperties().right,
       height: CGFloat.infinity)
-    let computedTitleRect = forTitle.boundingRectWithSize(size,
-      options: .UsesLineFragmentOrigin,
+    let computedTitleRect = forTitle.boundingRect(with: size,
+      options: .usesLineFragmentOrigin,
       attributes: [NSFontAttributeName : font],
       context: nil)
     return computedTitleRect.height + headerType.marginProperties().top + headerType.marginProperties().bottom + 5

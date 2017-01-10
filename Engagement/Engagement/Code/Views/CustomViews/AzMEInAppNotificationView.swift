@@ -17,7 +17,7 @@ class AzMEInAppNotificationView: UIView {
   @IBOutlet weak var ibContentView: UIView!
   @IBOutlet weak var ibCloseButton: UIButton!
   
-  private var announcementVM: AnnouncementViewModel?
+  fileprivate var announcementVM: AnnouncementViewModel?
   
   //MARK: Initialization
   override init(frame: CGRect) {
@@ -37,22 +37,22 @@ class AzMEInAppNotificationView: UIView {
   }
   
   func commonInit() {
-    NSBundle.mainBundle().loadNibNamed("AzMEInAppNotificationView", owner: self, options: nil)
+    Bundle.main.loadNibNamed("AzMEInAppNotificationView", owner: self, options: nil)
     self.frame = self.ibRootView.frame
     self.addSubview(self.ibRootView)
     
-    ibTitleLabel.textColor = UIColor(named: UIColor.Name.GeneralText)
+    ibTitleLabel.textColor = UIColor(named: UIColor.Name.generalText)
     ibTitleLabel.font = UIFont(named: UIFont.AppFont.Medium, size: 17)
     
-    ibMessageLabel.textColor = UIColor(named: UIColor.Name.SecondaryText)
+    ibMessageLabel.textColor = UIColor(named: UIColor.Name.secondaryText)
     ibMessageLabel.font = UIFont(named: UIFont.AppFont.Regular, size: 15)
     
     self.ibTitleLabel.text = self.announcementVM?.title
     self.ibMessageLabel.text = self.announcementVM?.body
     
-    ibCloseButton.setImage(AzIcon.iconClose(18).imageWithSize(CGSize(width: 18, height: 18)).imageWithRenderingMode(.AlwaysTemplate),
-      forState: .Normal)
-    ibCloseButton.tintColor = UIColor(named: UIColor.Name.SmallMentions)
+    ibCloseButton.setImage(AzIcon.iconClose(18).image(with: CGSize(width: 18, height: 18)).withRenderingMode(.alwaysTemplate),
+      for: UIControlState())
+    ibCloseButton.tintColor = UIColor(named: UIColor.Name.smallMentions)
     
   }
   
@@ -60,31 +60,31 @@ class AzMEInAppNotificationView: UIView {
     self.ibContentView.layer.cornerRadius = 5
     self.ibContentView.layer.shadowOpacity = 1
     self.ibContentView.layer.shadowRadius = 5
-    self.ibContentView.layer.shadowOffset = CGSizeZero
-    self.ibContentView.layer.shadowColor = UIColor.blackColor().CGColor
+    self.ibContentView.layer.shadowOffset = CGSize.zero
+    self.ibContentView.layer.shadowColor = UIColor.black.cgColor
     self.ibContentView.layer.masksToBounds = false
-    self.ibContentView.layer.shadowPath = UIBezierPath(rect: self.ibContentView.bounds).CGPath
+    self.ibContentView.layer.shadowPath = UIBezierPath(rect: self.ibContentView.bounds).cgPath
   }
   
   //MARK: Actions
-  @IBAction func didTapCloseButton(sender: AnyObject) {
-    UIView.animateWithDuration(0.3,
+  @IBAction func didTapCloseButton(_ sender: AnyObject) {
+    UIView.animate(withDuration: 0.3,
       animations: { () -> Void in
         self.alpha = 0
-      }){ (completed) -> Void in
+      }, completion: { (completed) -> Void in
         self.removeFromSuperview()
-    }
+    })
   }
   
-  @IBAction func didTapActionButton(sender: AnyObject)
+  @IBAction func didTapActionButton(_ sender: AnyObject)
   {
-    UIView.animateWithDuration(0.3,
+    UIView.animate(withDuration: 0.3,
       animations: { () -> Void in
         self.alpha = 0
-      }){ (completed) -> Void in
+      }, completion: { (completed) -> Void in
         self.announcementVM?.action?()
         self.removeFromSuperview()
         
-    }
+    })
   }
 }

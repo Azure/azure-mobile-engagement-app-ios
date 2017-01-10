@@ -12,7 +12,7 @@ import QuartzCore
 AzME AEDefaultNotifier sublcass to bind in-app notification view informations
 */
 class AzMENotifier: AEDefaultNotifier{
-  override func nibNameForCategory(category: String!) -> String! {
+  override func nibName(forCategory category: String!) -> String! {
     return "AzMENotificationView"
   }
   
@@ -35,12 +35,12 @@ class AzMENotifier: AEDefaultNotifier{
    * params: view View used to display the notification.
    * - note: Some "dispatch_after" hacks here due to UI force changes failures (layoutIfNeeded/setNeedsLayout), to improve.
    */
-  override func prepareNotificationView(view: UIView!, forContent content: AEInteractiveContent!) {
+  override func prepareNotificationView(_ view: UIView!, for content: AEInteractiveContent!) {
     
-    super.prepareNotificationView(view, forContent: content)
+    super.prepareNotificationView(view, for: content)
     
     if let imageView = view.viewWithTag(1) as? UIImageView {
-      imageView.contentMode = .ScaleAspectFit
+      imageView.contentMode = .scaleAspectFit
       if let notificationItem = content.notificationImage {
         imageView.image = notificationItem
       } else {
@@ -49,41 +49,41 @@ class AzMENotifier: AEDefaultNotifier{
     }
     
     if let titleLabel = view.viewWithTag(2) as? UILabel{
-      titleLabel.textColor = UIColor(named: UIColor.Name.GeneralText)
+      titleLabel.textColor = UIColor(named: UIColor.Name.generalText)
       titleLabel.font = UIFont(named: UIFont.AppFont.Medium, size: 18)
       titleLabel.text = content.notificationTitle
       titleLabel.sizeToFit()
     }
     
     if let messageLabel = view.viewWithTag(3) as? UILabel{
-      messageLabel.textColor = UIColor(named: UIColor.Name.SecondaryText)
+      messageLabel.textColor = UIColor(named: UIColor.Name.secondaryText)
       messageLabel.font = UIFont(named: UIFont.AppFont.Regular, size: 16)
       messageLabel.text = content.notificationMessage
       // If your label is included in a nib or storyboard as a subview of the view of a ViewController that uses
       // autolayout, then putting your sizeToFit call into viewDidLoad won't work, because autolayout sizes and
       // positions the subviews after viewDidLoad is called and will immediately undo the effects of your
       // sizeToFit call. However, calling sizeToFit from within viewDidLayoutSubviews will work.
-      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.05 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.05 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
         messageLabel.sizeToFit()
       }
     }
     
     if let closeButton = view.viewWithTag(6) as? UIButton{
-      closeButton.setImage(AzIcon.iconClose(20).imageWithSize(CGSize(width: 20, height: 20)).imageWithRenderingMode(.AlwaysTemplate),
-        forState: .Normal)
-      closeButton.tintColor = UIColor(named: UIColor.Name.SmallMentions)
+      closeButton.setImage(AzIcon.iconClose(20).image(with: CGSize(width: 20, height: 20)).withRenderingMode(.alwaysTemplate),
+        for: UIControlState())
+      closeButton.tintColor = UIColor(named: UIColor.Name.smallMentions)
     }
     
     if let contentView = view.viewWithTag(10) {
-      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.05 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.05 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
         
         contentView.layer.cornerRadius = 5
         contentView.layer.shadowRadius = 5
         contentView.layer.shadowOpacity = 1
-        contentView.layer.shadowOffset = CGSizeZero
-        contentView.layer.shadowColor = UIColor.blackColor().CGColor
+        contentView.layer.shadowOffset = CGSize.zero
+        contentView.layer.shadowColor = UIColor.black.cgColor
         contentView.layer.masksToBounds = false
-        contentView.layer.shadowPath = UIBezierPath(rect: contentView.bounds).CGPath
+        contentView.layer.shadowPath = UIBezierPath(rect: contentView.bounds).cgPath
       }
     }
     
@@ -94,12 +94,12 @@ class AzMENotifier: AEDefaultNotifier{
         if let contentView = view.viewWithTag(10) {
           view.hideAndDisable()
           contentView.hideAndDisable()
-          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+          DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
             view.superview?.hideAndDisable()
           }
         }
         // We delayed the notification action to be performed after the AzME SDK notification preparation.
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
           content.actionNotification(true)
         }
         // In case of "POP-UP" category, we customize the in-app notification.
@@ -109,34 +109,34 @@ class AzMENotifier: AEDefaultNotifier{
         let t =  content.notificationTitle ?? ""
         let alertController = UIAlertController(title: t,
           message: content.notificationMessage ?? "",
-          preferredStyle: UIAlertControllerStyle.Alert)
-        let okAction = UIAlertAction(title: content.actionLabel ?? "Ok", style: UIAlertActionStyle.Default, handler: {
+          preferredStyle: UIAlertControllerStyle.alert)
+        let okAction = UIAlertAction(title: content.actionLabel ?? "Ok", style: UIAlertActionStyle.default, handler: {
           action in
           
           content.actionNotification(true)
           
         })
-        let cancel = UIAlertAction(title: content.exitLabel ?? L10n.tr("close.button"), style: UIAlertActionStyle.Cancel, handler: {
+        let cancel = UIAlertAction(title: content.exitLabel ?? L10n.tr("close.button"), style: UIAlertActionStyle.cancel, handler: {
           action in
           content.exitNotification()
         })
         alertController.addAction(okAction)
         alertController.addAction(cancel)
-        alertController.view.tintColor = UIColor(named: UIColor.Name.PrimaryTheme)
+        alertController.view.tintColor = UIColor(named: UIColor.Name.primaryTheme)
         if let contentView = view.viewWithTag(10) {
           view.hideAndDisable()
           contentView.hideAndDisable()
-          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+          DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
             view.superview?.hideAndDisable()
           }
         }
-        DeepLinkHelper.rootNavigationViewController()?.presentViewController(alertController, animated: true, completion: nil)
+        DeepLinkHelper.rootNavigationViewController()?.present(alertController, animated: true, completion: nil)
       }
     } else {
       if let contentView = view.viewWithTag(10) {
         view.showAndEnable()
         contentView.showAndEnable()
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
           view.superview?.hideAndDisable()
         }
       }
@@ -147,29 +147,29 @@ class AzMENotifier: AEDefaultNotifier{
 extension UIView {
   
   func hideAndDisable() {
-    self.hidden = true
-    self.userInteractionEnabled = false
+    self.isHidden = true
+    self.isUserInteractionEnabled = false
   }
   
   func showAndEnable() {
-    self.hidden = false
-    self.userInteractionEnabled = true
+    self.isHidden = false
+    self.isUserInteractionEnabled = true
   }
   
 }
 
 extension UIImage {
   
-  func imageWithInsets(insets: UIEdgeInsets) -> UIImage {
+  func imageWithInsets(_ insets: UIEdgeInsets) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(
-      CGSizeMake(self.size.width + insets.left + insets.right,
-        self.size.height + insets.top + insets.bottom), false, self.scale)
+      CGSize(width: self.size.width + insets.left + insets.right,
+        height: self.size.height + insets.top + insets.bottom), false, self.scale)
     UIGraphicsGetCurrentContext()
     let origin = CGPoint(x: insets.left, y: insets.top)
-    self.drawAtPoint(origin)
+    self.draw(at: origin)
     let imageWithInsets = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
-    return imageWithInsets
+    return imageWithInsets!
   }
   
 }

@@ -14,7 +14,7 @@ class FullscreenInterstitialViewController : AEAnnouncementViewController {
   @IBOutlet weak var ibAnnoncementView: UIView!
   @IBOutlet weak var ibcTopConstraint: NSLayoutConstraint!
   
-  private var announcementVM: AnnouncementViewModel?
+  fileprivate var announcementVM: AnnouncementViewModel?
   
   //MARK: Initialization
   override init!(announcement anAnnouncement: AEReachAnnouncement!) {
@@ -26,7 +26,7 @@ class FullscreenInterstitialViewController : AEAnnouncementViewController {
     super.init(nibName: nil, bundle: nil)
   }
   
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -47,16 +47,16 @@ class FullscreenInterstitialViewController : AEAnnouncementViewController {
     }
     
     self.addChildViewController(annoncementViewController)
-    annoncementViewController.view.frame = CGRectMake(0, 0, ibAnnoncementView.frame.size.width, ibAnnoncementView.frame.size.height);
+    annoncementViewController.view.frame = CGRect(x: 0, y: 0, width: ibAnnoncementView.frame.size.width, height: ibAnnoncementView.frame.size.height);
     self.addChildViewController(annoncementViewController)
     self.ibAnnoncementView.addSubview(annoncementViewController.view)
-    annoncementViewController.didMoveToParentViewController(self)
+    annoncementViewController.didMove(toParentViewController: self)
     annoncementViewController.view.layer.cornerRadius = 10
     annoncementViewController.view.layer.masksToBounds = true
     self.ibAnnoncementView.layer.cornerRadius = 10
     self.ibAnnoncementView.layer.masksToBounds = true
     self.ibAnnoncementView.layer.shadowOffset = CGSize(width: 0, height: 0)
-    self.ibAnnoncementView.layer.shadowColor = UIColor.blackColor().CGColor
+    self.ibAnnoncementView.layer.shadowColor = UIColor.black.cgColor
     self.ibAnnoncementView.layer.shadowOpacity = 1
     self.ibAnnoncementView.layer.shadowRadius = 5
     self.ibAnnoncementView.clipsToBounds = false

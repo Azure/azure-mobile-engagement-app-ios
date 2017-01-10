@@ -23,7 +23,7 @@ struct PollChoiceViewModel{
    
    - returns: PollChoice View Model
    */
-  static func choices(fromQuestion: AEReachPollQuestion) -> [PollChoiceViewModel]{
+  static func choices(_ fromQuestion: AEReachPollQuestion) -> [PollChoiceViewModel]{
     var choices = [PollChoiceViewModel]()
     
     for choice in fromQuestion.choices {

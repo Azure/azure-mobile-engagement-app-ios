@@ -17,15 +17,15 @@ struct Theme{
    Prepare the default style. The method have to be initially call from the app delegate didFinishLauching method
    */
   static func prepareThemeAppearance(){
-    UIApplication.setStatusBarStyle(.LightContent)
+    UIApplication.setStatusBarStyle(.lightContent)
     
     //Custom UINavigationBar Appearance
     let navAppearance = UINavigationBar.appearance()
-    navAppearance.barTintColor = UIColor(named: UIColor.Name.PrimaryTheme)
-    navAppearance.tintColor = .whiteColor()
-    navAppearance.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
-    navAppearance.translucent = false
-    navAppearance.setBackgroundImage(UIImage(), forBarPosition: .Any, barMetrics: .Default)
+    navAppearance.barTintColor = UIColor(named: UIColor.Name.primaryTheme)
+    navAppearance.tintColor = .white
+    navAppearance.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.white]
+    navAppearance.isTranslucent = false
+    navAppearance.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
     navAppearance.shadowImage = UIImage()
   }
 }

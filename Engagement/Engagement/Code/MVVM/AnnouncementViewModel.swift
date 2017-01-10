@@ -19,8 +19,8 @@ struct AnnouncementViewModel {
   var actionTitle: String?
   var exitTitle: String?
   var body: String?
-  var URL: NSURL?
-  var type = AEAnnouncementType.Unknown
+  var URL: Foundation.URL?
+  var type = AEAnnouncementType.unknown
   
   var action: (() -> Void)?
   

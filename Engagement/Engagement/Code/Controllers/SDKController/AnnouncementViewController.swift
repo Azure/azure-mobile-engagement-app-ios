@@ -24,9 +24,9 @@ class AnnouncementViewController: AEAnnouncementViewController {
   @IBOutlet weak var ibSeparator: UIView!
   
   @IBOutlet weak var ibNavBarHeight: NSLayoutConstraint!
-  private var isLocal: Bool = false
+  fileprivate var isLocal: Bool = false
   
-  private var announcementVM: AnnouncementViewModel?
+  fileprivate var announcementVM: AnnouncementViewModel?
   
   var intersticialDelegate: AnnouncementIntersticialDelegate?
   
@@ -41,7 +41,7 @@ class AnnouncementViewController: AEAnnouncementViewController {
     super.init(nibName: nil, bundle: nil)
   }
   
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -53,40 +53,40 @@ class AnnouncementViewController: AEAnnouncementViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    ibSeparator.backgroundColor = UIColor(named: UIColor.Name.LightGrey)
-    ibActionButton.tintColor = UIColor(named: UIColor.Name.PrimaryTheme)
-    ibCloseButton.tintColor = UIColor(named: UIColor.Name.PrimaryTheme)
+    ibSeparator.backgroundColor = UIColor(named: UIColor.Name.lightGrey)
+    ibActionButton.tintColor = UIColor(named: UIColor.Name.primaryTheme)
+    ibCloseButton.tintColor = UIColor(named: UIColor.Name.primaryTheme)
     
     if let announcement = self.announcement{
       self.announcementVM = AnnouncementViewModel(fromAnnouncement: announcement)
     }
     
     //cast here, to improve
-    if let _ = parentViewController as? FullscreenInterstitialViewController {
+    if let _ = parent as? FullscreenInterstitialViewController {
       // Do nothing
     }
     else if isLocal == true {
       self.ibNavBarHeight.constant = 0
     }
     
-    if let actionTitle = announcementVM?.actionTitle where actionTitle.isEmpty == false {
-      ibActionButton.setTitle(actionTitle, forState: .Normal)
+    if let actionTitle = announcementVM?.actionTitle, actionTitle.isEmpty == false {
+      ibActionButton.setTitle(actionTitle, for: UIControlState())
     } else {
       ibActionButton.removeFromSuperview()
     }
     
-    if let exitTitle = announcementVM?.exitTitle where exitTitle.isEmpty == false {
-      ibCloseButton.setTitle(exitTitle, forState: .Normal)
+    if let exitTitle = announcementVM?.exitTitle, exitTitle.isEmpty == false {
+      ibCloseButton.setTitle(exitTitle, for: UIControlState())
     } else {
       ibCloseButton.removeFromSuperview()
     }
     
     self.title = announcementVM?.title
     self.ibNavItemTitle.title = announcementVM?.title
-    let mainBundle = NSURL(fileURLWithPath: NSBundle.mainBundle().bundlePath)
+    let mainBundle = URL(fileURLWithPath: Bundle.main.bundlePath)
     
     if let HTMLBody = announcementVM?.body{
-      if announcementVM?.type == AEAnnouncementType.Text{
+      if announcementVM?.type == AEAnnouncementType.text{
         let htmlContent = String(HTMLString: HTMLBody)
         ibWebView.loadHTMLString(htmlContent, baseURL: mainBundle)
       }else{
@@ -97,7 +97,7 @@ class AnnouncementViewController: AEAnnouncementViewController {
   }
   
   //MARK: Actions
-  @IBAction func didTapActionButton(sender: AnyObject) {
+  @IBAction func didTapActionButton(_ sender: AnyObject) {
     AnalyticsMonitor.sendActivityNamed(AnalyticsMonitor.Events.ReboundScreen.viewAll, extras: nil)
     if isLocal == true{
       self.announcementVM?.action?()
@@ -111,10 +111,10 @@ class AnnouncementViewController: AEAnnouncementViewController {
     }
   }
   
-  @IBAction func didTapCloseButton(sender: AnyObject) {
+  @IBAction func didTapCloseButton(_ sender: AnyObject) {
     AnalyticsMonitor.sendActivityNamed(AnalyticsMonitor.Events.ReboundScreen.close, extras: nil)
     if isLocal == true{
-      self.dismissViewControllerAnimated(true, completion: nil)
+      self.dismiss(animated: true, completion: nil)
     }
     else{
       

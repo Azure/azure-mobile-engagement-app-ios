@@ -21,13 +21,13 @@ struct AzMEService{
    - parameter forHome:    true if you just want the last recent update, false by default
    - parameter completion: Closure paramters : a non empty array of RecentUpdate object and an optionnal error
    */
-  static func fetchAzMERecentUpdates(forHome forHome: Bool = false, completion : ([RecentUpdate], NSError?) -> Void )
+  static func fetchAzMERecentUpdates(forHome: Bool = false, completion : @escaping ([RecentUpdate], NSError?) -> Void )
   {
-    if let feedURL = NSURL(string: Config.Services.recentUpdates)
+    if let feedURL = URL(string: Config.Services.recentUpdates)
     {
-      NSURLSession.sharedSession().dataTaskWithURL(feedURL, completionHandler:
+      URLSession.shared.dataTask(with: feedURL, completionHandler:
         { (data, response, error) -> Void in
-          if let data = data where error == nil
+          if let data = data, error == nil
           {
             let xml = SWXMLHash.parse(data)
             
@@ -51,12 +51,12 @@ struct AzMEService{
               }
             }
             
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
               completion(parsedUpdates, nil)
             })
           }else{
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-              completion([RecentUpdate](), error)
+            DispatchQueue.main.async(execute: { () -> Void in
+              completion([RecentUpdate](), error as NSError?)
             })
           }
       }).resume()
@@ -68,17 +68,17 @@ struct AzMEService{
    
    - parameter completion: Closure parameter : a non empty Video object array and an optionnal service error
    */
-  static func fetchAzMEVideoFeed(completion : ([Video], NSError?) -> Void )
+  static func fetchAzMEVideoFeed(_ completion : @escaping ([Video], NSError?) -> Void )
   {
-    if let feedURL = NSURL(string: Config.Services.azmeMoviesFeed)
+    if let feedURL = URL(string: Config.Services.azmeMoviesFeed)
     {
-      NSURLSession.sharedSession().dataTaskWithURL(feedURL, completionHandler:
+      URLSession.shared.dataTask(with: feedURL, completionHandler:
         { (data, response, error) -> Void in
           if let data = data
           {
             do
             {
-              let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as! NSDictionary
+              let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! NSDictionary
               let swiftyJSON = JSON(json)
               
               var videosParsed = [Video]()
@@ -87,9 +87,9 @@ struct AzMEService{
                 for video in videos{
                   videosParsed.append(Video.parseFromJSONElement(video))
                 }
-                videosParsed.insert(Video.defaultVideo(), atIndex: 0)
+                videosParsed.insert(Video.defaultVideo(), at: 0)
               }
-              dispatch_async(dispatch_get_main_queue(), { () -> Void in
+              DispatchQueue.main.async(execute: { () -> Void in
                 completion(videosParsed, nil)
               })
             }
@@ -97,15 +97,15 @@ struct AzMEService{
               let customError = NSError(domain: "azure.microsoft.com",
                 code: 600,
                 userInfo: [NSLocalizedDescriptionKey : "Error : incorrect response format"])
-              dispatch_async(dispatch_get_main_queue(), { () -> Void in
+              DispatchQueue.main.async(execute: { () -> Void in
                 completion([Video](), customError)
               })
               
             }
           }
           else{
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-              completion([Video](), error)
+            DispatchQueue.main.async(execute: { () -> Void in
+              completion([Video](), error as NSError?)
             })
           }
       }).resume()

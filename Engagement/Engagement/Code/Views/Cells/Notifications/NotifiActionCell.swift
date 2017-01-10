@@ -12,7 +12,7 @@ import UIKit
  *  Notify that the embeded UIButton has been "touch up inside"
  */
 protocol NotifActionDelegate: class{
-  func didTapButton(atIndex: NSIndexPath?)
+  func didTapButton(_ atIndex: IndexPath?)
 }
 
 /**
@@ -25,8 +25,8 @@ class NotifiActionCell: UITableViewCell {
   
   static let identifier = "NotifiActionCell"
   
-  private weak var delegate: NotifActionDelegate?
-  private var index: NSIndexPath?
+  fileprivate weak var delegate: NotifActionDelegate?
+  fileprivate var index: IndexPath?
   
   //MARK: Overriding
   override func awakeFromNib() {
@@ -37,7 +37,7 @@ class NotifiActionCell: UITableViewCell {
   }
   
   //MARK: Actions
-  @IBAction func didTapActionButton(sender: AnyObject) {
+  @IBAction func didTapActionButton(_ sender: AnyObject) {
     self.delegate?.didTapButton(self.index)
   }
   
@@ -48,10 +48,10 @@ class NotifiActionCell: UITableViewCell {
    - parameter index:    The indexPath of the UITableViewCell, used by the NotifActionDelegate (could be evolved with a completion block)
    - parameter delegate: NotifActionDelegate
    */
-  func update(item: NotificationScreenItem, index: NSIndexPath, delegate: NotifActionDelegate)
+  func update(_ item: NotificationScreenItem, index: IndexPath, delegate: NotifActionDelegate)
   {
-    ibActionButton.setTitle(item.title, forState: .Normal)
-    ibActionButton.setBackgroundImage(UIColor.imageWithColor(item.color) , forState: .Normal)
+    ibActionButton.setTitle(item.title, for: UIControlState())
+    ibActionButton.setBackgroundImage(UIColor.imageWithColor(item.color) , for: UIControlState())
     ibDescription.text = item.description
     self.delegate = delegate
     self.index = index

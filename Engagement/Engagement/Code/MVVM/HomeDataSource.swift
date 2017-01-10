@@ -30,14 +30,14 @@ struct HomeDataSource {
     L10n.tr("home.hightlight.7")]
   
   let sectionHighlights = HomeSection(title: L10n.tr("home.hightlight.title"),
-    titleColor: .whiteColor(),
-    bgColor: UIColor(named: UIColor.Name.SecondaryOrange),
+    titleColor: .white,
+    bgColor: UIColor(named: UIColor.Name.secondaryOrange),
     buttonTitle: "",
     action: nil)
   
   var sections = [(section: HomeSection, items: [AnyObject])]()
   
   init(){
-    sections.append((self.sectionHighlights, self.highlights))
+    sections.append((self.sectionHighlights, self.highlights as [AnyObject]))
   }
 }

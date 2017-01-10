@@ -31,10 +31,10 @@ class EngagementUITests: XCTestCase {
     func testCollapse(){
         
         let app = XCUIApplication()
-        app.navigationBars["Engagement.HomeView"].childrenMatchingType(.Button).elementBoundByIndex(0).tap()
+        app.navigationBars["Engagement.HomeView"].children(matching: .button).element(boundBy: 0).tap()
         
         let tablesQuery = app.tables
-        tablesQuery.cells.containingType(.StaticText, identifier:"Helpful links").childrenMatchingType(.StaticText).matchingIdentifier("Helpful links").elementBoundByIndex(0).tap()
+        tablesQuery.cells.containing(.staticText, identifier:"Helpful links").children(matching: .staticText).matching(identifier: "Helpful links").element(boundBy: 0).tap()
         tablesQuery.staticTexts["Helpful links"].tap()
         
     }
@@ -44,12 +44,12 @@ class EngagementUITests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
         let app = XCUIApplication()
-        app.navigationBars["Engagement.HomeView"].childrenMatchingType(.Button).elementBoundByIndex(0).tap()
+        app.navigationBars["Engagement.HomeView"].children(matching: .button).element(boundBy: 0).tap()
         
         let tablesQuery = app.tables
-        tablesQuery.cells.containingType(.StaticText, identifier:"Videos").childrenMatchingType(.StaticText).matchingIdentifier("Videos").elementBoundByIndex(0).tap()
+        tablesQuery.cells.containing(.staticText, identifier:"Videos").children(matching: .staticText).matching(identifier: "Videos").element(boundBy: 0).tap()
         // Failed to find matching element please file bug (bugreport.apple.com) and provide output from Console.app
-        tablesQuery.cells.containingType(.StaticText, identifier:"Capturing Analytics data with Azure Mobile Engagement").childrenMatchingType(.StaticText).matchingIdentifier("Capturing Analytics data with Azure Mobile Engagement").elementBoundByIndex(0).tap()
+        tablesQuery.cells.containing(.staticText, identifier:"Capturing Analytics data with Azure Mobile Engagement").children(matching: .staticText).matching(identifier: "Capturing Analytics data with Azure Mobile Engagement").element(boundBy: 0).tap()
         
     }
     

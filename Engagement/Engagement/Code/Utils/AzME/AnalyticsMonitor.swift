@@ -20,8 +20,8 @@ struct AnalyticsMonitor{
    - parameter name:   Tag Name
    - parameter extras: Extras Informations
    */
-  static func sendActivityNamed(name: String, extras: [NSObject : AnyObject]?){
-    EngagementAgent.shared()?.sendEvent(name, extras: extras)
+  static func sendActivityNamed(_ name: String, extras: [AnyHashable: Any]?){
+    EngagementAgent.shared().sendEvent(name, extras: extras)
   }
   
   //MARK: Activities Tags
@@ -49,21 +49,21 @@ struct AnalyticsMonitor{
     
     struct ActivitiesExtras {
       static let notificationType = "notificationType"
-      static func notificationExtraValueForType(type: ScreenType) -> String {
+      static func notificationExtraValueForType(_ type: ScreenType) -> String {
         switch type {
-        case .OutOfApp:
+        case .outOfApp:
           return "notification_out_of_app"
-        case .InApp:
+        case .inApp:
           return "notification_in_app"
-        case .InAppPopUp:
+        case .inAppPopUp:
           return "notification_in_app_popup"
-        case .WebAnnouncement:
+        case .webAnnouncement:
           return "notification_web_announcement"
-        case .FullScreen:
+        case .fullScreen:
           return "notification_full_screen"
-        case.Poll:
+        case.poll:
           return "notification_poll"
-        case .DataPush:
+        case .dataPush:
           return "notification_datapush"
         }
       }
@@ -75,9 +75,9 @@ struct AnalyticsMonitor{
   {
     struct Home {
       static let viewAllUpdates           = "view_all_udpates"
-      private static let clickArticleHome = "click_article_home"
-      static func clickArticleHome(title: String?, URL: String?){
-        if let title = title, URL = URL{
+      fileprivate static let clickArticleHome = "click_article_home"
+      static func clickArticleHome(_ title: String?, URL: String?){
+        if let title = title, let URL = URL{
           AnalyticsMonitor.sendActivityNamed(clickArticleHome, extras:
             [AnalyticsMonitor.Events.EventsExtras.title : title,
               AnalyticsMonitor.Events.EventsExtras.URL : URL
@@ -97,9 +97,9 @@ struct AnalyticsMonitor{
     }
     
     struct RecentUpdates {
-      private static let clickArticle = "click_article"
-      static func clickArticle(title: String?, URL: String?){
-        if let title = title, URL = URL{
+      fileprivate static let clickArticle = "click_article"
+      static func clickArticle(_ title: String?, URL: String?){
+        if let title = title, let URL = URL{
           AnalyticsMonitor.sendActivityNamed(clickArticle, extras:
             [AnalyticsMonitor.Events.EventsExtras.title : title,
               AnalyticsMonitor.Events.EventsExtras.URL : URL
@@ -174,8 +174,8 @@ struct AnalyticsMonitor{
     
     struct Video {
       static let play = "play_video"
-      private static let stop = "stop_video"
-      static func stop(seconds: Int){
+      fileprivate static let stop = "stop_video"
+      static func stop(_ seconds: Int){
         
       }
     }
@@ -193,12 +193,11 @@ struct AnalyticsMonitor{
     
     struct Video {
       
-      private static let videoTag = "video"
+      fileprivate static let videoTag = "video"
       
-      static func start(title: String?, URL: String?) {
-        if let title = title, videoURL = URL{
-          print("Start video job with title '", title, "' and url '", URL)
-          EngagementAgent.shared()?.startJob(videoTag,
+      static func start(_ title: String?, URL: String?) {
+        if let title = title, let videoURL = URL {
+          EngagementAgent.shared().startJob(videoTag,
             extras: [
               AnalyticsMonitor.Events.EventsExtras.title : title,
               AnalyticsMonitor.Events.EventsExtras.URL : videoURL
@@ -208,7 +207,7 @@ struct AnalyticsMonitor{
       
       static func end() {
         print("End video job")
-        EngagementAgent.shared()?.endJob(videoTag)
+        EngagementAgent.shared().endJob(videoTag)
       }
     }
     

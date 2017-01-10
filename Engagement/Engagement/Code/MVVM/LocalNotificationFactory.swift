@@ -19,26 +19,26 @@ struct LocalNotificationFactory {
       
       let shareAction = UIMutableUserNotificationAction()
       shareAction.identifier = Config.Notifications.shareIdentifier
-      shareAction.destructive = false
+      shareAction.isDestructive = false
       shareAction.title = Config.Notifications.shareActionTitle
-      shareAction.activationMode = .Foreground
-      shareAction.authenticationRequired = false
+      shareAction.activationMode = .foreground
+      shareAction.isAuthenticationRequired = false
       
       let feedbackAction = UIMutableUserNotificationAction()
       feedbackAction.identifier = Config.Notifications.feedbackIdentifier
-      feedbackAction.destructive = false
+      feedbackAction.isDestructive = false
       feedbackAction.title = Config.Notifications.feedbackActionTitle
-      feedbackAction.activationMode = .Foreground
-      feedbackAction.authenticationRequired = false
+      feedbackAction.activationMode = .foreground
+      feedbackAction.isAuthenticationRequired = false
       
       let categoryIdentifier = "category.outofapp.action"
       category.identifier = categoryIdentifier
-      category.setActions([shareAction, feedbackAction], forContext: .Minimal)
-      category.setActions([shareAction, feedbackAction], forContext: .Default)
+      category.setActions([shareAction, feedbackAction], for: .minimal)
+      category.setActions([shareAction, feedbackAction], for: .default)
       
       let categories = Set(arrayLiteral: category)
-      let settings = UIUserNotificationSettings(forTypes: [.Alert, .Sound], categories: categories)
-      UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+      let settings = UIUserNotificationSettings(types: [.alert, .sound], categories: categories)
+      UIApplication.shared.registerUserNotificationSettings(settings)
       
       let notification = UILocalNotification()
       notification.userInfo = [
@@ -49,8 +49,8 @@ struct LocalNotificationFactory {
       notification.category = categoryIdentifier
       notification.alertTitle = L10n.tr("out.of.app.push.notification.content.title")
       notification.alertBody = L10n.tr("out.of.app.push.notification.content.text")
-      notification.fireDate = NSDate().dateByAddingTimeInterval(5)
-      notification.timeZone = NSTimeZone.defaultTimeZone()
+      notification.fireDate = Date().addingTimeInterval(5)
+      notification.timeZone = TimeZone.current
       notification.alertAction = "Action Name"
       
       
@@ -64,26 +64,26 @@ struct LocalNotificationFactory {
       
       let shareAction = UIMutableUserNotificationAction()
       shareAction.identifier = Config.Notifications.shareIdentifier
-      shareAction.destructive = false
+      shareAction.isDestructive = false
       shareAction.title = Config.Notifications.shareActionTitle
-      shareAction.activationMode = .Foreground
-      shareAction.authenticationRequired = false
+      shareAction.activationMode = .foreground
+      shareAction.isAuthenticationRequired = false
       
       let feedbackAction = UIMutableUserNotificationAction()
       feedbackAction.identifier = Config.Notifications.feedbackIdentifier
-      feedbackAction.destructive = false
+      feedbackAction.isDestructive = false
       feedbackAction.title = Config.Notifications.feedbackActionTitle
-      feedbackAction.activationMode = .Foreground
-      feedbackAction.authenticationRequired = false
+      feedbackAction.activationMode = .foreground
+      feedbackAction.isAuthenticationRequired = false
       
       let categoryIdentifier = "category.outofapp.action"
       category.identifier = categoryIdentifier
-      category.setActions([shareAction, feedbackAction], forContext: .Minimal)
-      category.setActions([shareAction, feedbackAction], forContext: .Default)
+      category.setActions([shareAction, feedbackAction], for: .minimal)
+      category.setActions([shareAction, feedbackAction], for: .default)
       
       let categories = Set(arrayLiteral: category)
-      let settings = UIUserNotificationSettings(forTypes: [.Alert, .Sound], categories: categories)
-      UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+      let settings = UIUserNotificationSettings(types: [.alert, .sound], categories: categories)
+      UIApplication.shared.registerUserNotificationSettings(settings)
       
       let notification = UILocalNotification()
       notification.userInfo = [
@@ -100,8 +100,8 @@ struct LocalNotificationFactory {
       notification.applicationIconBadgeNumber = 0
       notification.alertTitle = L10n.tr("out.of.app.push.notification.content.title")
       notification.alertBody = L10n.tr("out.of.app.push.notification.content.text")
-      notification.fireDate = NSDate().dateByAddingTimeInterval(5)
-      notification.timeZone = NSTimeZone.defaultTimeZone()
+      notification.fireDate = Date().addingTimeInterval(5)
+      notification.timeZone = TimeZone.current
       notification.alertAction = "Action Name"
       return notification
     }
