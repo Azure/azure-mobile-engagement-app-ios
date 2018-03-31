@@ -42,37 +42,37 @@ class NotificationsViewController: CenterViewController {
     super.viewDidLoad()
     
     if hasPushEnabled() == false {
-      let settings = UIUserNotificationSettings(forTypes: [UIUserNotificationType.Alert,
-        UIUserNotificationType.Badge,
-        UIUserNotificationType.Sound],
+      let settings = UIUserNotificationSettings(types: [UIUserNotificationType.alert,
+        UIUserNotificationType.badge,
+        UIUserNotificationType.sound],
         categories: nil)
-      UIApplication.sharedApplication().registerUserNotificationSettings(settings)
-      UIApplication.sharedApplication().registerForRemoteNotifications()
-      self.dismissViewControllerAnimated(true, completion: {});
+      UIApplication.shared.registerUserNotificationSettings(settings)
+      UIApplication.shared.registerForRemoteNotifications()
+      self.dismiss(animated: true, completion: {});
     }
     
-    self.view.backgroundColor = UIColor(named: UIColor.Name.PrimaryTheme)
+    self.view.backgroundColor = UIColor(named: UIColor.Name.primaryTheme)
     
-    self.ibHowToButton.backgroundColor = UIColor(named: UIColor.Name.PrimaryThemeLight)
+    self.ibHowToButton.backgroundColor = UIColor(named: UIColor.Name.primaryThemeLight)
     self.ibHowToButton.titleLabel?.font = UIFont(named: UIFont.AppFont.Regular, size: 15)
-    self.ibHowToButton.setTitle(L10n.tr("out.of.app.push.notifications.footer.text"), forState: .Normal)
+    self.ibHowToButton.setTitle(L10n.tr("out.of.app.push.notifications.footer.text"), for: UIControlState())
     self.ibHowToButton.titleLabel?.numberOfLines = 0
-    self.ibHowToButton.titleLabel?.textAlignment = .Center
+    self.ibHowToButton.titleLabel?.textAlignment = .center
     
-    self.ibTableView.separatorStyle = .SingleLine
-    self.ibTableView.separatorColor = UIColor.whiteColor().colorWithAlphaComponent(0.4)
+    self.ibTableView.separatorStyle = .singleLine
+    self.ibTableView.separatorColor = UIColor.white.withAlphaComponent(0.4)
     self.ibTableView.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-    self.ibTableView.backgroundColor = UIColor(named: UIColor.Name.PrimaryThemeLight)
+    self.ibTableView.backgroundColor = UIColor(named: UIColor.Name.primaryThemeLight)
     self.ibTableView.allowsSelection = false
     self.ibTableView.rowHeight = UITableViewAutomaticDimension
     self.ibTableView.estimatedRowHeight = 100
-    self.ibTableView.registerNib(UINib(nibName: NotifiActionCell.identifier, bundle: nil),
+    self.ibTableView.register(UINib(nibName: NotifiActionCell.identifier, bundle: nil),
       forCellReuseIdentifier: NotifiActionCell.identifier)
     
     let footerView = SimpleHeaderLabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 20))
     footerView.update(UIFont(named: UIFont.AppFont.Bold, size: 13),
       mainTitle: self.screenType?.footerLabelTitle,
-      headerType: HeaderViewType.TableHeader)
+      headerType: HeaderViewType.tableHeader)
     self.ibTableView.setAndLayoutTableFooterView(footerView)
     
     if let screenType = self.screenType{
@@ -94,7 +94,7 @@ class NotificationsViewController: CenterViewController {
     self.ibTableView.layoutTableFooterView()
   }
   
-  @IBAction func didHowToButtonTap(sender: AnyObject) {
+  @IBAction func didHowToButtonTap(_ sender: AnyObject) {
     if let screenType = self.screenType {
       let webController = WebViewController(howToNotificationType: screenType)
       self.navigationController?.pushViewController(webController, animated: true)
@@ -102,9 +102,9 @@ class NotificationsViewController: CenterViewController {
   }
   
   func hasPushEnabled() -> Bool {
-    if UIApplication.sharedApplication().respondsToSelector(#selector(UIApplication.currentUserNotificationSettings)) == true {
-      let settings = UIApplication.sharedApplication().currentUserNotificationSettings()
-      if (settings?.types.contains(.Alert) == true){
+    if UIApplication.shared.responds(to: #selector(getter: UIApplication.currentUserNotificationSettings)) == true {
+      let settings = UIApplication.shared.currentUserNotificationSettings
+      if (settings?.types.contains(.alert) == true){
         return true
       }
     }
@@ -115,11 +115,11 @@ class NotificationsViewController: CenterViewController {
 
 //MARK: UITableViewDataSource
 extension NotificationsViewController: UITableViewDataSource{
-  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  func numberOfSections(in tableView: UITableView) -> Int {
     return 1
   }
   
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     if let nbItems = self.notificationScreen?.dataSource?.count{
       return nbItems
     }
@@ -127,9 +127,9 @@ extension NotificationsViewController: UITableViewDataSource{
   }
   
   
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-    let cell = tableView.dequeueReusableCellWithIdentifier(NotifiActionCell.identifier, forIndexPath: indexPath) as! NotifiActionCell
+    let cell = tableView.dequeueReusableCell(withIdentifier: NotifiActionCell.identifier, for: indexPath) as! NotifiActionCell
     
     if let notificationItem = self.notificationScreen?.dataSource?[indexPath.row]{
       cell.update(notificationItem, index: indexPath, delegate: self)
@@ -139,7 +139,7 @@ extension NotificationsViewController: UITableViewDataSource{
         cell.separatorInset = UIEdgeInsetsMake(0, cell.bounds.size.width, 0, 0);
       }
     }
-    cell.backgroundColor = .clearColor()
+    cell.backgroundColor = .clear
     return cell
   }
 }
@@ -147,8 +147,8 @@ extension NotificationsViewController: UITableViewDataSource{
 //MARK: NotifActionDelegate
 extension NotificationsViewController: NotifActionDelegate {
   
-  func didTapButton(atIndex: NSIndexPath?) {
-    if let index = atIndex, notificationItem = self.notificationScreen?.dataSource?[index.row]{
+  func didTapButton(_ atIndex: IndexPath?) {
+    if let index = atIndex, let notificationItem = self.notificationScreen?.dataSource?[index.row]{
       notificationItem.action()
     }
   }

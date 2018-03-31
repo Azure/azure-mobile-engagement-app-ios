@@ -26,19 +26,19 @@ extension UIColor {
   }
   
   enum Name: UInt32 {
-    case PrimaryTheme       = 0x00abecff// #00abec
-    case PrimaryThemeLight  = 0x33bcf0ff// #33bcf0
-    case PrimaryThemeDark   = 0x0089bdff// #0089bd
-    case PrimaryText        = 0xffffffff// #ffffff
-    case PrimaryTextPressed = 0xedededff// #ededed
-    case GeneralText        = 0x303030ff// #303030
-    case SecondaryText      = 0x6a6a6aff// #6a6a6a
-    case SmallMentions      = 0xa9a9a9ff// #a9a9a9
-    case SecondaryOrange    = 0xff8c00ff// #f8c00
-    case SecondaryPurple    = 0x68217aff// #68217a
-    case SecondaryGrey      = 0xf6f6f6ff// #f6f6f6
-    case LightGrey          = 0xcacbccff// #cacbcc
-    case DarkGrey          = 0x9e9e9eff// #9E9E9E
+    case primaryTheme       = 0x00abecff// #00abec
+    case primaryThemeLight  = 0x33bcf0ff// #33bcf0
+    case primaryThemeDark   = 0x0089bdff// #0089bd
+    case primaryText        = 0xffffffff// #ffffff
+    case primaryTextPressed = 0xedededff// #ededed
+    case generalText        = 0x303030ff// #303030
+    case secondaryText      = 0x6a6a6aff// #6a6a6a
+    case smallMentions      = 0xa9a9a9ff// #a9a9a9
+    case secondaryOrange    = 0xff8c00ff// #f8c00
+    case secondaryPurple    = 0x68217aff// #68217a
+    case secondaryGrey      = 0xf6f6f6ff// #f6f6f6
+    case lightGrey          = 0xcacbccff// #cacbcc
+    case darkGrey          = 0x9e9e9eff// #9E9E9E
   }
   
   /**
@@ -49,12 +49,12 @@ extension UIColor {
    
    - returns: an UIImage based on an UIColor
    */
-  static func imageWithColor(color: UIColor, size: CGSize = CGSize(width: 20, height: 20)) -> UIImage {
-    let rect = CGRectMake(0, 0, size.width, size.height)
+  static func imageWithColor(_ color: UIColor, size: CGSize = CGSize(width: 20, height: 20)) -> UIImage {
+    let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
     UIGraphicsBeginImageContextWithOptions(size, false, 0)
     color.setFill()
     UIRectFill(rect)
-    let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+    let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
     UIGraphicsEndImageContext()
     return image
   }

@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.0.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>4</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -61,5 +61,19 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SanFranciscoDisplay-MediumItalic.otf</string>
+		<string>SanFranciscoDisplay-Black.otf</string>
+		<string>SanFranciscoDisplay-Bold.otf</string>
+		<string>SanFranciscoDisplay-Heavy.otf</string>
+		<string>SanFranciscoDisplay-Light.otf</string>
+		<string>SanFranciscoDisplay-Medium.otf</string>
+		<string>SanFranciscoDisplay-Regular.otf</string>
+		<string>SanFranciscoDisplay-Semibold.otf</string>
+		<string>SanFranciscoDisplay-Thin.otf</string>
+		<string>SanFranciscoDisplay-Ultralight.otf</string>
+		<string>AzME_icons.ttf</string>
+	</array>
 </dict>
 </plist>

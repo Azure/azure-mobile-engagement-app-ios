@@ -25,24 +25,24 @@ public struct NotificationScreenItem
 It can have informations like localized titles or related images
 */
 public enum ScreenType{
-  case OutOfApp, InApp, InAppPopUp, WebAnnouncement, FullScreen, Poll, DataPush
+  case outOfApp, inApp, inAppPopUp, webAnnouncement, fullScreen, poll, dataPush
   
   var howTitle: String?
     {
       switch (self){
-      case .OutOfApp:
+      case .outOfApp:
         return L10n.tr("how.to.send.these.notification.out.of.app.title")
-      case .InApp:
+      case .inApp:
         return L10n.tr("how.to.send.these.notification.in.app.title")
-      case .InAppPopUp:
+      case .inAppPopUp:
         return L10n.tr("how.to.send.these.notification.in.app.popup.title")
-      case .WebAnnouncement:
+      case .webAnnouncement:
         return L10n.tr("how.to.send.these.notification.web.announcement.title")
-      case .FullScreen:
+      case .fullScreen:
         return L10n.tr("how.to.send.these.notification.full.screen.interstitial.title")
-      case .Poll:
+      case .poll:
         return L10n.tr("how.to.send.these.notification.poll.title")
-      case .DataPush:
+      case .dataPush:
         return L10n.tr("how.to.send.these.notification.data.push.title")
       }
   }
@@ -50,19 +50,19 @@ public enum ScreenType{
   var maintTitle: String?
     {
       switch (self){
-      case .OutOfApp:
+      case .outOfApp:
         return L10n.tr("menu.out.of.app.title")
-      case .InApp:
+      case .inApp:
         return L10n.tr("menu.in.app.title")
-      case .InAppPopUp:
+      case .inAppPopUp:
         return L10n.tr("menu.in.app.pop.up.title")
-      case .WebAnnouncement:
+      case .webAnnouncement:
         return L10n.tr("menu.web.announcement.title")
-      case .FullScreen:
+      case .fullScreen:
         return L10n.tr("menu.full.screen.title")
-      case .Poll:
+      case .poll:
         return L10n.tr("menu.poll.title")
-      case .DataPush:
+      case .dataPush:
         return L10n.tr("menu.data.push.title")
       }
   }
@@ -70,28 +70,28 @@ public enum ScreenType{
   var message: String?
     {
       switch (self){
-      case .OutOfApp:
+      case .outOfApp:
         return L10n.tr("out.of.app.push.notifications.message")
-      case .InApp:
+      case .inApp:
         return L10n.tr("in.app.notifications.message")
-      case .InAppPopUp:
+      case .inAppPopUp:
         return L10n.tr("in.app.coupon.notification.message")
-      case .WebAnnouncement:
+      case .webAnnouncement:
         return L10n.tr("full.screen.interstitial.message")
-      case .FullScreen:
+      case .fullScreen:
         return L10n.tr("full.screen.interstitial.message")
-      case .Poll:
+      case .poll:
         return L10n.tr("poll.message")
-      case .DataPush:
+      case .dataPush:
         return L10n.tr("data.push.notification.message")
       }
   }
   
   var footerLabelTitle: String?{
     switch self{
-    case .OutOfApp, .InApp, .InAppPopUp, .FullScreen, .Poll, .WebAnnouncement:
+    case .outOfApp, .inApp, .inAppPopUp, .fullScreen, .poll, .webAnnouncement:
       return "Displays sample notification text"
-    case .DataPush:
+    case .dataPush:
       return "Displays fictitious product on the Data push screen"
     }
   }
@@ -99,39 +99,39 @@ public enum ScreenType{
   var image: UIImage?
     {
       switch (self){
-      case .OutOfApp:
-        return AzIcon.iconMenuOutApp(Int(defaultImageSize.width)).imageWithSize(defaultImageSize)
-      case .InApp:
-        return AzIcon.iconMenuInApp(Int(defaultImageSize.width)).imageWithSize(defaultImageSize)
-      case .InAppPopUp:
-        return AzIcon.iconMenuPopUp(Int(defaultImageSize.width)).imageWithSize(defaultImageSize)
-      case .WebAnnouncement:
-        return AzIcon.iconMenuFullScreen(Int(defaultImageSize.width)).imageWithSize(defaultImageSize)
-      case .FullScreen:
-        return AzIcon.iconMenuFullScreen(Int(defaultImageSize.width)).imageWithSize(defaultImageSize)
-      case .Poll:
-        return AzIcon.iconMenuPoll(Int(defaultImageSize.width)).imageWithSize(defaultImageSize)
-      case .DataPush:
-        return AzIcon.iconMenuDataPush(Int(defaultImageSize.width)).imageWithSize(defaultImageSize)
+      case .outOfApp:
+        return AzIcon.iconMenuOutApp(Int(defaultImageSize.width)).image(with: defaultImageSize)
+      case .inApp:
+        return AzIcon.iconMenuInApp(Int(defaultImageSize.width)).image(with: defaultImageSize)
+      case .inAppPopUp:
+        return AzIcon.iconMenuPopUp(Int(defaultImageSize.width)).image(with: defaultImageSize)
+      case .webAnnouncement:
+        return AzIcon.iconMenuFullScreen(Int(defaultImageSize.width)).image(with: defaultImageSize)
+      case .fullScreen:
+        return AzIcon.iconMenuFullScreen(Int(defaultImageSize.width)).image(with: defaultImageSize)
+      case .poll:
+        return AzIcon.iconMenuPoll(Int(defaultImageSize.width)).image(with: defaultImageSize)
+      case .dataPush:
+        return AzIcon.iconMenuDataPush(Int(defaultImageSize.width)).image(with: defaultImageSize)
       }
   }
   
   var howToRessourcePathName: String?{
     switch self
     {
-    case .DataPush:
+    case .dataPush:
       return "data_push_notification"
-    case .WebAnnouncement:
+    case .webAnnouncement:
       return "web_announcement"
-    case .FullScreen:
+    case .fullScreen:
       return "full_screen_interstitial"
-    case .InApp:
+    case .inApp:
       return "in_app"
-    case .InAppPopUp:
+    case .inAppPopUp:
       return "in_app_popup"
-    case .OutOfApp:
+    case .outOfApp:
       return "out_of_app"
-    case .Poll:
+    case .poll:
       return "poll"
     }
   }
@@ -160,19 +160,19 @@ struct NotificationScreen {
    
    - returns: an optionnal array of NotificationItem
    */
-  private func buildDataSource() -> [NotificationScreenItem]?
+  fileprivate func buildDataSource() -> [NotificationScreenItem]?
   {
     switch (self.screenType)
     {
-    case .OutOfApp:
+    case .outOfApp:
       let notifOnly = NotificationScreenItem(title: L10n.tr("out.of.app.push.notifications.notification.only.title"),
         description: L10n.tr("out.of.app.push.notifications.notification.only.message"),
-        color: UIColor(named: UIColor.Name.SecondaryPurple),
+        color: UIColor(named: UIColor.Name.secondaryPurple),
         action: { () -> Void in
           AnalyticsMonitor.sendActivityNamed(AnalyticsMonitor.Events.OutOfAppNotifications.displayNotification, extras: nil)
-          self.rootController.presentViewController(UIAlertController.alertControllerPreventNotification
+          self.rootController.present(UIAlertController.alertControllerPreventNotification
             {
-              UIApplication.sharedApplication().scheduleLocalNotification(LocalNotificationFactory.outOfAppNotification)
+              UIApplication.shared.scheduleLocalNotification(LocalNotificationFactory.outOfAppNotification)
             },
             animated: true,
             completion: nil)
@@ -180,36 +180,36 @@ struct NotificationScreen {
       
       let announcement = NotificationScreenItem(title: L10n.tr("out.of.app.push.notifications.announcement.title"),
         description: L10n.tr("out.of.app.push.notifications.announcement.message"),
-        color: UIColor(named: UIColor.Name.SecondaryOrange),
+        color: UIColor(named: UIColor.Name.secondaryOrange),
         action: { () -> Void in
           AnalyticsMonitor.sendActivityNamed(AnalyticsMonitor.Events.OutOfAppNotifications.displayAnnoucement, extras: nil)
-          self.rootController.presentViewController(UIAlertController.alertControllerPreventNotification
+          self.rootController.present(UIAlertController.alertControllerPreventNotification
             {
-              UIApplication.sharedApplication().scheduleLocalNotification(LocalNotificationFactory.outOfAppAnnouncementNotification)
+              UIApplication.shared.scheduleLocalNotification(LocalNotificationFactory.outOfAppAnnouncementNotification)
             },
             animated: true,
             completion: nil)
       })
       return [notifOnly, announcement]
       
-    case .InApp:
+    case .inApp:
       let notifOnly = NotificationScreenItem(title: L10n.tr("out.of.app.push.notifications.notification.only.title"),
         description: L10n.tr("in.app.notifications.notification.only.message"),
-        color: UIColor(named: UIColor.Name.SecondaryPurple),
+        color: UIColor(named: UIColor.Name.secondaryPurple),
         action: { () -> Void in
           AnalyticsMonitor.sendActivityNamed(AnalyticsMonitor.Events.InAppNotifications.displayNotification, extras: nil)
           var announcement = AnnouncementViewModel()
           announcement.title = L10n.tr("in.app.notifications.notification.title")
           announcement.body = L10n.tr("in.app.notifications.notification.message")
           announcement.action = {
-            DeepLinkHelper.canManage(NSURL(string: Config.AzMESDK.DeepLink.recentUpdatesLink)!)
+            DeepLinkHelper.canManage(URL(string: Config.AzMESDK.DeepLink.recentUpdatesLink)!)
           }
           DeepLinkHelper.displayLocalInAppNotification(announcement, inController: self.rootController)
       })
       
       let announcement = NotificationScreenItem(title: L10n.tr("out.of.app.push.notifications.announcement.title"),
         description: L10n.tr("in.app.notifications.announcement.message"),
-        color: UIColor(named: UIColor.Name.SecondaryOrange),
+        color: UIColor(named: UIColor.Name.secondaryOrange),
         action: { () -> Void in
           AnalyticsMonitor.sendActivityNamed(AnalyticsMonitor.Events.InAppNotifications.displayAnnouncement,
             extras: nil)
@@ -228,44 +228,44 @@ struct NotificationScreen {
                 "exitButton": L10n.tr("close.button")
               ],
               AzMELocalNotification.keyNotificationLink : Config.AzMESDK.DeepLink.recentUpdatesLink
-            ]
+            ] as [String : Any]
             
-            DeepLinkHelper.manageLocalNotification(userInfo as [NSObject : AnyObject])
+            DeepLinkHelper.manageLocalNotification(userInfo as [AnyHashable: Any])
             
           }
           DeepLinkHelper.displayLocalInAppNotification(announcement, inController: self.rootController)
       })
       return [notifOnly, announcement]
-    case .InAppPopUp:
+    case .inAppPopUp:
       let popUpNotif = NotificationScreenItem(title: L10n.tr("in.app.coupon.notification.display.title"),
         description: "",
-        color: UIColor(named: UIColor.Name.SecondaryPurple),
+        color: UIColor(named: UIColor.Name.secondaryPurple),
         action: { () -> Void in
           AnalyticsMonitor.sendActivityNamed(AnalyticsMonitor.Events.InAppPopUpNotifications.displayInAppPopUp,
             extras: nil)
           let t =  L10n.tr("in.app.coupon.notification.dialog.title")
           let alertController = UIAlertController(title: t,
             message: L10n.tr("in.app.coupon.notification.dialog.description"),
-            preferredStyle: UIAlertControllerStyle.Alert)
-          let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: {
+            preferredStyle: UIAlertControllerStyle.alert)
+          let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: {
             action in
             
-            DeepLinkHelper.canManage(NSURL(string: Config.AzMESDK.DeepLink.productLink)!)
+            DeepLinkHelper.canManage(URL(string: Config.AzMESDK.DeepLink.productLink)!)
             
           })
-          let cancel = UIAlertAction(title: L10n.tr("close.button"), style: UIAlertActionStyle.Cancel, handler: nil)
+          let cancel = UIAlertAction(title: L10n.tr("close.button"), style: UIAlertActionStyle.cancel, handler: nil)
           alertController.addAction(okAction)
           alertController.addAction(cancel)
-          alertController.view.tintColor = UIColor(named: UIColor.Name.PrimaryTheme)
-          self.rootController.presentViewController(alertController,
+          alertController.view.tintColor = UIColor(named: UIColor.Name.primaryTheme)
+          self.rootController.present(alertController,
             animated: true,
             completion: nil)
       })
       return [popUpNotif]
-    case .WebAnnouncement:
+    case .webAnnouncement:
       let fullScreenNotif = NotificationScreenItem(title: L10n.tr("web.announcement.title"),
         description: "",
-        color: UIColor(named: UIColor.Name.SecondaryPurple),
+        color: UIColor(named: UIColor.Name.secondaryPurple),
         action: { () -> Void in
           AnalyticsMonitor.sendActivityNamed(AnalyticsMonitor.Events.FullScreenIntersticial.displayFulLScreenIntersticial,
             extras: nil)
@@ -285,18 +285,18 @@ struct NotificationScreen {
                 "exitButton" : L10n.tr("close.button")
               ],
               AzMELocalNotification.keyNotificationLink : Config.URLs.features
-            ]
+            ] as [String : Any]
             
-            DeepLinkHelper.manageLocalNotification(userInfo as [NSObject : AnyObject])
+            DeepLinkHelper.manageLocalNotification(userInfo as [AnyHashable: Any])
             
           }
           DeepLinkHelper.displayLocalInAppNotification(announcement, inController: self.rootController)
       })
       return [fullScreenNotif]
-    case .FullScreen:
+    case .fullScreen:
       let fullScreenNotif = NotificationScreenItem(title: L10n.tr("full.screen.interstitial.display.title"),
         description: "",
-        color: UIColor(named: UIColor.Name.SecondaryPurple),
+        color: UIColor(named: UIColor.Name.secondaryPurple),
         action: { () -> Void in
           AnalyticsMonitor.sendActivityNamed(AnalyticsMonitor.Events.WebAnnouncement.displayFulLScreenIntersticial,
             extras: nil)
@@ -309,14 +309,14 @@ struct NotificationScreen {
               "exitButton" : L10n.tr("close.button")
             ],
             AzMELocalNotification.keyNotificationLink : Config.URLs.features
-          ]
-          DeepLinkHelper.manageLocalNotification(userInfo as [NSObject : AnyObject])
+          ] as [String : Any]
+          DeepLinkHelper.manageLocalNotification(userInfo as [AnyHashable: Any])
       })
       return [fullScreenNotif]
-    case .Poll:
+    case .poll:
       let poll = NotificationScreenItem(title: L10n.tr("poll.display.title"),
         description: "",
-        color: UIColor(named: UIColor.Name.SecondaryPurple),
+        color: UIColor(named: UIColor.Name.secondaryPurple),
         action: { () -> Void in
           AnalyticsMonitor.sendActivityNamed(AnalyticsMonitor.Events.Poll.displayPollNotification,
             extras: nil)
@@ -352,21 +352,21 @@ struct NotificationScreen {
             let pollController = PollViewController(pollModel: pollModel)
             
             navController.setViewControllers([pollController], animated: false)
-            self.rootController.presentViewController(navController, animated: true, completion: nil)
+            self.rootController.present(navController, animated: true, completion: nil)
             
           }
           DeepLinkHelper.displayLocalInAppNotification(announcement, inController: self.rootController)
           
       })
       return [poll]
-    case .DataPush:
+    case .dataPush:
       let silentDataPush = NotificationScreenItem(title: L10n.tr("data.push.notification.display.title"),
         description: "",
-        color: UIColor(named: UIColor.Name.SecondaryPurple),
+        color: UIColor(named: UIColor.Name.secondaryPurple),
         action: { () -> Void in
           AnalyticsMonitor.sendActivityNamed(AnalyticsMonitor.Events.DataPush.launchDataPush,
             extras: nil)
-          DeepLinkHelper.pushViewController(ProductViewController(productViewType: .DataPush))
+          DeepLinkHelper.pushViewController(ProductViewController(productViewType: .dataPush))
       })
       return [silentDataPush]
     }

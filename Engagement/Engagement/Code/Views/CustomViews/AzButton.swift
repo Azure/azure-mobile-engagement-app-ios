@@ -22,7 +22,7 @@ class AzButton : UIButton {
   }
   
   func applyTheme() {
-    self.backgroundColor = UIColor(named: UIColor.Name.PrimaryTheme)
+    self.backgroundColor = UIColor(named: UIColor.Name.primaryTheme)
     self.layer.cornerRadius = 5
     self.layer.masksToBounds = true
   }

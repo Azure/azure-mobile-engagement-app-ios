@@ -20,10 +20,10 @@ class PermissionViewController : UIViewController {
     ibLabel.text = L10n.tr("permission.message")
     
     ibButton.titleLabel?.font = UIFont(named: UIFont.AppFont.Medium, size: 20)
-    ibButton.setBackgroundImage(UIColor.imageWithColor(UIColor(named: UIColor.Name.SecondaryOrange)) , forState: .Normal)
+    ibButton.setBackgroundImage(UIColor.imageWithColor(UIColor(named: UIColor.Name.secondaryOrange)) , for: UIControlState())
   }
   
-  @IBAction func didOkButtonTap(sender: AnyObject) {
+  @IBAction func didOkButtonTap(_ sender: AnyObject) {
     
   }
   

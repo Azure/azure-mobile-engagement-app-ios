@@ -21,9 +21,9 @@ class AboutViewController: CenterViewController {
     self.navigationItem.title = L10n.tr("menu.about.title")
     
     self.ibWebView.delegate = self
-    if let aboutUrl = NSBundle.mainBundle().pathForResource("about", ofType: "html", inDirectory: "html")
+    if let aboutUrl = Bundle.main.path(forResource: "about", ofType: "html", inDirectory: "html")
     {
-      self.ibWebView.loadRequest(NSURLRequest(URL: NSURL(fileURLWithPath: aboutUrl)))
+      self.ibWebView.loadRequest(URLRequest(url: URL(fileURLWithPath: aboutUrl)))
     }
   }
   
@@ -31,10 +31,10 @@ class AboutViewController: CenterViewController {
     return AnalyticsMonitor.Activities.About
   }
   
-  private func openLink(link: String) {
-    if let URL = NSURL(string: link) {
-      let controller = AzMESafariController(URL: URL)
-      self.navigationController?.presentViewController(controller, animated: true, completion: nil)
+  fileprivate func openLink(_ link: String) {
+    if let URL = URL(string: link) {
+      let controller = AzMESafariController(url: URL)
+      self.navigationController?.present(controller, animated: true, completion: nil)
     }
   }
 }
@@ -42,8 +42,8 @@ class AboutViewController: CenterViewController {
 //MARK: UIWebViewDelegate
 extension AboutViewController : UIWebViewDelegate {
   
-  func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-    if let url = request.URL?.absoluteString {
+  func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    if let url = request.url?.absoluteString {
       if (url.hasSuffix("smartnsoft")) {
         openLink(Config.URLs.smartnsoft)
       }

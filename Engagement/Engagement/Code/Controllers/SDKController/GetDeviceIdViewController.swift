@@ -25,38 +25,37 @@ class GetDeviceIdViewController: CenterViewController {
     
     self.title = L10n.tr("menu.get.device.id.title")
     
-    ibShareButton.setImage(UIImage(named: "share")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+    ibShareButton.setImage(UIImage(named: "share")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
     
-    ibIcon.image = AzIcon.iconMenGetDeviceID(60).imageWithSize(CGSize(width: 60, height: 60)).imageWithRenderingMode(.AlwaysTemplate)
-    ibIcon.tintColor = UIColor(named: UIColor.Name.LightGrey)
+    ibIcon.image = AzIcon.iconMenGetDeviceID(60).image(with: CGSize(width: 60, height: 60)).withRenderingMode(.alwaysTemplate)
+    ibIcon.tintColor = UIColor(named: UIColor.Name.lightGrey)
   }
   
   //MARK: Actions
-  @IBAction func didTapShareButton(sender: AnyObject)
+  @IBAction func didTapShareButton(_ sender: AnyObject)
   {
     AnalyticsMonitor.sendActivityNamed(AnalyticsMonitor.Events.GetDeviceID.share, extras: nil)
-    if let azmeDeviceIdentifier = EngagementAgent.shared()?.deviceId(){
-      let objectsToShare = [azmeDeviceIdentifier]
-      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0))
+    let azmeDeviceIdentifier = EngagementAgent.shared().deviceId()
+    let objectsToShare = [azmeDeviceIdentifier]
+    DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async
       {
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad{
+        if UIDevice.current.userInterfaceIdiom == .pad{
           activityVC.popoverPresentationController?.sourceView = self.ibShareButton
           activityVC.popoverPresentationController?.sourceRect = self.ibShareButton.bounds
         }
         activityVC.completionWithItemsHandler = { (activityTypeString, completed, items, error) in
           if completed == true && error == nil{
-            if (activityTypeString == UIActivityTypeCopyToPasteboard){
+            if (activityTypeString == UIActivityType.copyToPasteboard){
               AnalyticsMonitor.sendActivityNamed(AnalyticsMonitor.Events.GetDeviceID.copy, extras: nil)
             }else{
               AnalyticsMonitor.sendActivityNamed(AnalyticsMonitor.Events.GetDeviceID.share, extras: nil)
             }
           }
         }
-        dispatch_async(dispatch_get_main_queue()) {
-          self.presentViewController(activityVC, animated: true, completion: nil)
+        DispatchQueue.main.async {
+          self.present(activityVC, animated: true, completion: nil)
         }
-      }
     }
   }
 }

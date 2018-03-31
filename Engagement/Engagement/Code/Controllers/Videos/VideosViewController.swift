@@ -30,20 +30,20 @@ class VideosViewController: CenterViewController {
     
     self.title = L10n.tr("menu.videos.title")
     
-    ibTableView.backgroundColor = UIColor(named: UIColor.Name.SecondaryGrey)
-    ibTableView.separatorStyle = .None
+    ibTableView.backgroundColor = UIColor(named: UIColor.Name.secondaryGrey)
+    ibTableView.separatorStyle = .none
     ibTableView.rowHeight = UITableViewAutomaticDimension
     ibTableView.estimatedRowHeight = 100
-    ibTableView.registerNib(UINib(nibName: VideoCell.identifier, bundle: nil),
+    ibTableView.register(UINib(nibName: VideoCell.identifier, bundle: nil),
       forCellReuseIdentifier: VideoCell.identifier)
     
     self.reloadData()
   }
   
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
-    UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: .Fade)
+    UIApplication.shared.setStatusBarHidden(false, with: .fade)
     if videoJobStarted == true {
       AnalyticsMonitor.Jobs.Video.end()
     }
@@ -52,7 +52,7 @@ class VideosViewController: CenterViewController {
   /**
    Fetch video data
    */
-  private func reloadData(){
+  fileprivate func reloadData(){
     //Load video feed
     UIApplication.showHUD()
     AzMEService.fetchAzMEVideoFeed { (videos, error) -> Void in
@@ -67,16 +67,16 @@ class VideosViewController: CenterViewController {
 
 //MARK: UITableViewDataSource
 extension VideosViewController: UITableViewDataSource {
-  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  func numberOfSections(in tableView: UITableView) -> Int {
     return self.dataSource.count > 0 ? 1 : 0
   }
   
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return self.dataSource.count
   }
   
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier(VideoCell.identifier, forIndexPath: indexPath) as! VideoCell
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: VideoCell.identifier, for: indexPath) as! VideoCell
     
     let video = self.dataSource[indexPath.row]
     cell.updateWith(video.title, subTitle: video.description, imageLink: video.pictureUrl, localImage: video.isEmbed)
@@ -88,27 +88,27 @@ extension VideosViewController: UITableViewDataSource {
 //MARK: UITableViewDelegate
 extension VideosViewController: UITableViewDelegate {
   
-  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let video = self.dataSource[indexPath.row]
     
-    if let videoUrl = video.videoUrl, videoURL = NSURL(string: videoUrl){
+    if let videoUrl = video.videoUrl, let videoURL = URL(string: videoUrl){
       let playerController = AVPlayerViewController()
       playerController.delegate = self
       if video.isEmbed == true{
-        if let videoURLEmbed = NSBundle.mainBundle().URLForResource(videoUrl, withExtension: ".mp4"){
-          playerController.player = AVPlayer(URL: videoURLEmbed)
+        if let videoURLEmbed = Bundle.main.url(forResource: videoUrl, withExtension: ".mp4"){
+          playerController.player = AVPlayer(url: videoURLEmbed)
         }
       }else{
         
-        playerController.player = AVPlayer(URL: videoURL)
+        playerController.player = AVPlayer(url: videoURL)
       }
       //AnalyticsMonitor.sendActivityNamed(AnalyticsMonitor.Events.Video, extras: [NSObject : AnyObject]?)
-      UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .Fade)
+      UIApplication.shared.setStatusBarHidden(true, with: .fade)
       
-      self.navigationController?.presentViewController(playerController,
+      self.navigationController?.present(playerController,
         animated: true,
         completion: { [unowned self] in
-          self.ibTableView.deselectRowAtIndexPath(indexPath, animated: true)
+          self.ibTableView.deselectRow(at: indexPath, animated: true)
           playerController.player!.play()
           AnalyticsMonitor.sendActivityNamed(AnalyticsMonitor.Events.Video.play, extras: nil)
           AnalyticsMonitor.Jobs.Video.start(video.title, URL: videoUrl)

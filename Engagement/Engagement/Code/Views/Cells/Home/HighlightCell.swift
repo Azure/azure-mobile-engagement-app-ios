@@ -21,13 +21,13 @@ class HighlightCell: UITableViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     
-    self.backgroundColor = UIColor(named: UIColor.Name.SecondaryOrange)
+    self.backgroundColor = UIColor(named: UIColor.Name.secondaryOrange)
     
     self.ibTitle.font = UIFont(named: UIFont.AppFont.Medium, size: 14)
-    self.ibImage.image = AzIcon.iconCheck(15).imageWithSize(CGSize(width: 15, height: 15)).imageWithRenderingMode(.AlwaysTemplate)
+    self.ibImage.image = AzIcon.iconCheck(15).image(with: CGSize(width: 15, height: 15)).withRenderingMode(.alwaysTemplate)
   }
   
-  func updateWith(title: String?){
+  func updateWith(_ title: String?){
     self.ibTitle.text = title
   }
   

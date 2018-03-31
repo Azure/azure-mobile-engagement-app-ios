@@ -7,6 +7,30 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l <= r
+  default:
+    return !(rhs < lhs)
+  }
+}
+
 
 class CenterViewController: EngagementViewController {
   
@@ -14,24 +38,24 @@ class CenterViewController: EngagementViewController {
     super.viewDidLoad()
   }
   
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
     if self.navigationController?.viewControllers.count <= 1
     {
-      self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: AzIcon.iconMenu(18).imageWithSize(CGSizeMake(18, 18)),
-        style: .Plain,
+      self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: AzIcon.iconMenu(18).image(with: CGSize(width: 18, height: 18)),
+        style: .plain,
         target: self,
         action: #selector(CenterViewController.toggleDrawer))
     }
   }
   
   func toggleDrawer(){
-    self.mm_drawerController.toggleDrawerSide(.Left, animated: true) { [weak self] (finished) -> Void in
-      if self?.mm_drawerController.openSide == .Left{
-        UIApplication.setStatusBarStyle(.Default)
+    self.mm_drawerController.toggle(.left, animated: true) { [weak self] (finished) -> Void in
+      if self?.mm_drawerController.openSide == .left{
+        UIApplication.setStatusBarStyle(.default)
       }else{
-        UIApplication.setStatusBarStyle(.LightContent)
+        UIApplication.setStatusBarStyle(.lightContent)
       }
     }
   }

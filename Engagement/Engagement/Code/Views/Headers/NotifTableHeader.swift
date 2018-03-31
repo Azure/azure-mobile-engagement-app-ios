@@ -28,7 +28,7 @@ class NotifTableHeader: UIView {
   }
   
   func commonInit() {
-    NSBundle.mainBundle().loadNibNamed("NotifTableHeader", owner: self, options: nil)
+    Bundle.main.loadNibNamed("NotifTableHeader", owner: self, options: nil)
     self.frame = self.ibRootView.frame
     self.addSubview(self.ibRootView)
     
@@ -41,8 +41,8 @@ class NotifTableHeader: UIView {
    - parameter image:     Top left image
    - parameter mainTitle: descritpion text, displayed above image
    */
-  func update(image: UIImage?, mainTitle: String?){
-    self.ibIcon.image = image?.imageWithRenderingMode(.AlwaysTemplate)
+  func update(_ image: UIImage?, mainTitle: String?){
+    self.ibIcon.image = image?.withRenderingMode(.alwaysTemplate)
     self.ibMainTitle.text = mainTitle
   }
 }

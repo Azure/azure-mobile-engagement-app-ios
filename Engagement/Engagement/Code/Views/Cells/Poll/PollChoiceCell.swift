@@ -19,17 +19,17 @@ class PollChoiceCell: UITableViewCell {
   static let identifier = "PollChoiceCell"
   
   //MARK: Overriding
-  override func setSelected(selected: Bool, animated: Bool) {
+  override func setSelected(_ selected: Bool, animated: Bool) {
     
     self.applyStyleForSelecteState(selected)
   }
   
-  override func setHighlighted(highlighted: Bool, animated: Bool) {
+  override func setHighlighted(_ highlighted: Bool, animated: Bool) {
     if highlighted == true{
       ibRadioImage.image = UIImage(named: "radio_button_off_pressed")
     }
     else{
-      self.applyStyleForSelecteState(self.selected)
+      self.applyStyleForSelecteState(self.isSelected)
     }
   }
   
@@ -38,7 +38,7 @@ class PollChoiceCell: UITableViewCell {
    
    - parameter selected: Selected state
    */
-  private func applyStyleForSelecteState(selected: Bool){
+  fileprivate func applyStyleForSelecteState(_ selected: Bool){
     if selected == true{
       ibRadioImage.image = UIImage(named: "radio_button_on")
     }
@@ -52,7 +52,7 @@ class PollChoiceCell: UITableViewCell {
    
    - parameter title: Choice title
    */
-  func update(title: String){
+  func update(_ title: String){
     self.ibChoiceTitle.text = title
   }
 }

@@ -18,9 +18,9 @@ class PollViewController: AEPollViewController {
   @IBOutlet weak var ibcNavBarHeight: NSLayoutConstraint!
   @IBOutlet weak var ibNavBarTitleItem: UINavigationItem!
   
-  private var isFake = false
-  private var hasBody = false
-  private var selectedChoices = [String : (choiceId: String, indexPath: NSIndexPath)]()
+  fileprivate var isFake = false
+  fileprivate var hasBody = false
+  fileprivate var selectedChoices = [String : (choiceId: String, indexPath: IndexPath)]()
   
   var reachPollViewModel : PollViewModel?
   
@@ -49,49 +49,49 @@ class PollViewController: AEPollViewController {
       self.title = self.reachPollViewModel?.title
     }
     self.ibNavBarTitleItem.title = self.reachPollViewModel?.title
-    self.view.backgroundColor = UIColor(named: UIColor.Name.PrimaryThemeLight)
+    self.view.backgroundColor = UIColor(named: UIColor.Name.primaryThemeLight)
     
-    self.ibTableView.backgroundColor = UIColor(named: UIColor.Name.PrimaryThemeLight)
+    self.ibTableView.backgroundColor = UIColor(named: UIColor.Name.primaryThemeLight)
     self.ibTableView.rowHeight = UITableViewAutomaticDimension
     self.ibTableView.estimatedRowHeight = 60
     self.ibTableView.allowsMultipleSelection = true
     let headerView = SimpleHeaderLabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 20))
     let attributedString = NSMutableAttributedString()
     if self.isFake == true {
-      attributedString.appendAttributedString(NSAttributedString(string: "A sample poll/survey notification\n\n",
+      attributedString.append(NSAttributedString(string: "A sample poll/survey notification\n\n",
         attributes: [NSFontAttributeName : UIFont(named: UIFont.AppFont.Bold, size: 13)]))
     }
     if let body = self.reachPollViewModel?.body{
-      attributedString.appendAttributedString(NSAttributedString(string: body,
+      attributedString.append(NSAttributedString(string: body,
         attributes: [NSFontAttributeName : UIFont(named: UIFont.AppFont.Regular, size: 22)]))
     }
-    headerView.updateAttributed(attributedString, headerType: HeaderViewType.TableHeader)
+    headerView.updateAttributed(attributedString, headerType: HeaderViewType.tableHeader)
     self.ibTableView.setAndLayoutTableHeaderView(headerView)
     
-    self.ibTableView.registerNib(UINib(nibName: PollChoiceCell.identifier, bundle: nil),
+    self.ibTableView.register(UINib(nibName: PollChoiceCell.identifier, bundle: nil),
       forCellReuseIdentifier: PollChoiceCell.identifier)
     self.ibTableView.tableFooterView = UIView()
-    self.ibTableView.separatorStyle = .None
+    self.ibTableView.separatorStyle = .none
     
     self.hasBody = self.reachPollViewModel?.body.isEmpty ?? false
     
-    if let exitTitle = self.reachPollViewModel?.exitTitle where exitTitle.isEmpty == false {
-      ibDismissButton.setTitle(exitTitle.uppercaseString, forState: .Normal)
+    if let exitTitle = self.reachPollViewModel?.exitTitle, exitTitle.isEmpty == false {
+      ibDismissButton.setTitle(exitTitle.uppercased(), for: UIControlState())
     } else {
       ibDismissButton.removeFromSuperview()
     }
-    if let actionTitle = self.reachPollViewModel?.actionTitle where actionTitle.isEmpty == false {
-      ibActionButton.setTitle(actionTitle.uppercaseString, forState: .Normal)
+    if let actionTitle = self.reachPollViewModel?.actionTitle, actionTitle.isEmpty == false {
+      ibActionButton.setTitle(actionTitle.uppercased(), for: UIControlState())
     } else {
       ibActionButton.removeFromSuperview()
     }
     
-    self.ibActionButton.setBackgroundImage(UIColor.imageWithColor(UIColor(named: UIColor.Name.SecondaryPurple).colorWithAlphaComponent(0.6)),
-      forState: UIControlState.Disabled)
-    self.ibActionButton.setBackgroundImage(UIColor.imageWithColor(UIColor(named: UIColor.Name.SecondaryPurple)),
-      forState: .Normal)
-    self.ibDismissButton.setBackgroundImage(UIColor.imageWithColor(UIColor(named: UIColor.Name.PrimaryTheme)),
-      forState: .Normal)
+    self.ibActionButton.setBackgroundImage(UIColor.imageWithColor(UIColor(named: UIColor.Name.secondaryPurple).withAlphaComponent(0.6)),
+      for: UIControlState.disabled)
+    self.ibActionButton.setBackgroundImage(UIColor.imageWithColor(UIColor(named: UIColor.Name.secondaryPurple)),
+      for: UIControlState())
+    self.ibDismissButton.setBackgroundImage(UIColor.imageWithColor(UIColor(named: UIColor.Name.primaryTheme)),
+      for: UIControlState())
     
     updateActionButtonState()
     // Do any additional setup after loading the view.
@@ -104,16 +104,16 @@ class PollViewController: AEPollViewController {
   }
   
   //MARK: Actions
-  @IBAction func didTapExitButton(sender: AnyObject) {
+  @IBAction func didTapExitButton(_ sender: AnyObject) {
     if isFake == true{
-      self.dismissViewControllerAnimated(true, completion: nil)
+      self.dismiss(animated: true, completion: nil)
     }
     else{
       self.exitButtonClicked(sender)
     }
   }
   
-  @IBAction func didTapActionButton(sender: AnyObject) {
+  @IBAction func didTapActionButton(_ sender: AnyObject) {
     if self.isFake == true{
       self.reachPollViewModel?.action?()
       
@@ -134,7 +134,7 @@ class PollViewController: AEPollViewController {
    Button is disable when not all question have a choice
    */
   func updateActionButtonState(){
-    self.ibActionButton.enabled = (self.selectedChoices.count == self.reachPollViewModel?.questions.count && self.selectedChoices.count > 0)
+    self.ibActionButton.isEnabled = (self.selectedChoices.count == self.reachPollViewModel?.questions.count && self.selectedChoices.count > 0)
   }
   
   /**
@@ -144,7 +144,7 @@ class PollViewController: AEPollViewController {
    
    - returns: a PollChoiceViewModel
    */
-  func choice(fromIndex: NSIndexPath) -> PollChoiceViewModel?{
+  func choice(_ fromIndex: IndexPath) -> PollChoiceViewModel?{
     
     if let question = self.question(fromIndex){
       return question.choices[fromIndex.row]
@@ -159,7 +159,7 @@ class PollViewController: AEPollViewController {
    
    - returns: a PollQuestionViewModel
    */
-  func question(fromIndex: NSIndexPath) -> PollQuestionViewModel?{
+  func question(_ fromIndex: IndexPath) -> PollQuestionViewModel?{
     return self.reachPollViewModel?.questions[fromIndex.section]
   }
   
@@ -167,19 +167,19 @@ class PollViewController: AEPollViewController {
 
 //MARK: UITableViewDataSource
 extension PollViewController: UITableViewDataSource{
-  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  func numberOfSections(in tableView: UITableView) -> Int {
     return self.reachPollViewModel?.questions.count ?? 0
   }
   
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     if let question = self.reachPollViewModel?.questions[section]{
       return question.choices.count
     }
     return 0
   }
   
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier(PollChoiceCell.identifier, forIndexPath: indexPath) as! PollChoiceCell
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: PollChoiceCell.identifier, for: indexPath) as! PollChoiceCell
     
     //retrieve choice, update title
     if let choice = self.choice(indexPath){
@@ -193,37 +193,41 @@ extension PollViewController: UITableViewDataSource{
 //MARK: UITableViewDelegate
 extension PollViewController: UITableViewDelegate{
   
-  func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    cell.backgroundColor = .clear
+  }
+  
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     
     let headerView = SimpleHeaderLabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30))
     
-    if let question = self.question(NSIndexPath(forRow: 0, inSection: section)){
+    if let question = self.question(IndexPath(row: 0, section: section)){
       headerView.update(UIFont(named: UIFont.AppFont.Bold, size: 18),
         mainTitle: question.title,
-        headerType: HeaderViewType.SectionHeader)
+        headerType: HeaderViewType.sectionHeader)
     }
     
     return headerView
   }
   
-  func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    if let question = self.question(NSIndexPath(forRow: 0, inSection: section)){
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    if let question = self.question(IndexPath(row: 0, section: section)){
       return SimpleHeaderLabel.headerHeight(UIFont(named: UIFont.AppFont.Bold, size: 18),
         forTitle: question.title,
         insideWidth: self.view.frame.size.width,
-        headerType: HeaderViewType.SectionHeader)
+        headerType: HeaderViewType.sectionHeader)
     }
     
     return 0.1
   }
   
-  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    if let question = self.question(indexPath), choice = self.choice(indexPath){
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if let question = self.question(indexPath), let choice = self.choice(indexPath){
       
       if let choiceTuple = (self.selectedChoices[question.questionId]){
         
         if choiceTuple.indexPath != indexPath{
-          tableView.deselectRowAtIndexPath(choiceTuple.indexPath, animated: true)
+          tableView.deselectRow(at: choiceTuple.indexPath, animated: true)
           self.selectedChoices[question.questionId] = (choice.choiceId, indexPath)
         }
         

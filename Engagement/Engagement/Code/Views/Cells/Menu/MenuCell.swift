@@ -26,16 +26,16 @@ class MenuCell: UITableViewCell {
         self.ibIcon?.image = item.icon
         
         if item.isChild == true {
-          self.backgroundColor = UIColor(named: UIColor.Name.SecondaryGrey)
+          self.backgroundColor = UIColor(named: UIColor.Name.secondaryGrey)
           
         }else{
-          self.backgroundColor = .whiteColor()
+          self.backgroundColor = .white
         }
         
         if item.selectedCompletion != nil && item.isChild == false {
-          self.ibExpandIndicator.hidden = false
+          self.ibExpandIndicator.isHidden = false
         } else {
-          self.ibExpandIndicator.hidden = true
+          self.ibExpandIndicator.isHidden = true
         }
       }
     }
@@ -44,23 +44,23 @@ class MenuCell: UITableViewCell {
   
   override func awakeFromNib() {
     super.awakeFromNib()
-    self.layoutMargins = UIEdgeInsetsZero
+    self.layoutMargins = UIEdgeInsets.zero
     ibTitle.font = UIFont(named: UIFont.AppFont.Medium, size: 15)
   }
   
-  override func setSelected(selected: Bool, animated: Bool) {
+  override func setSelected(_ selected: Bool, animated: Bool) {
     if (menuItem?.isSelectable == true) {
       if selected == true {
-        self.ibTitle.textColor = UIColor(named: UIColor.Name.PrimaryTheme)
+        self.ibTitle.textColor = UIColor(named: UIColor.Name.primaryTheme)
       } else {
-        self.ibTitle.textColor = UIColor(named: UIColor.Name.GeneralText)
+        self.ibTitle.textColor = UIColor(named: UIColor.Name.generalText)
         
       }
     }
     else{
-      self.ibTitle.textColor = UIColor(named: UIColor.Name.GeneralText)
+      self.ibTitle.textColor = UIColor(named: UIColor.Name.generalText)
       if menuItem?.isChild == true{
-        self.ibTitle.textColor = UIColor(named: UIColor.Name.SecondaryText)
+        self.ibTitle.textColor = UIColor(named: UIColor.Name.secondaryText)
       }
     }
     self.ibIcon.tintColor = self.ibTitle.textColor
@@ -73,7 +73,7 @@ class MenuCell: UITableViewCell {
     rotationAnimation.toValue = M_PI
     rotationAnimation.duration = 1.0
     
-    self.ibExpandIndicator.layer.addAnimation(rotationAnimation, forKey: "rotationAnimation")
+    self.ibExpandIndicator.layer.add(rotationAnimation, forKey: "rotationAnimation")
   }
   
 }

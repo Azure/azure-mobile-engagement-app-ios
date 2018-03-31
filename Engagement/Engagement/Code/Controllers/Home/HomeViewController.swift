@@ -12,7 +12,7 @@ import SafariServices
 //MARK: HomeViewController
 class HomeViewController: CenterViewController {
   
-  private let kHeaderHeight = 50
+  fileprivate let kHeaderHeight = 50
   
   @IBOutlet weak var ibSubTitle: UILabel!
   @IBOutlet weak var ibMainTitle: UILabel!
@@ -38,18 +38,18 @@ class HomeViewController: CenterViewController {
     ibMainTitle.font = UIFont(named: UIFont.AppFont.Bold, size: 20)
     ibSubTitle.font = UIFont(named: UIFont.AppFont.Medium, size: 14)
     
-    let image = AzIcon.iconLogoAzme(85).imageWithSize(CGSize(width: 60, height: 85))
-    ibLogo.image = image .imageWithRenderingMode(.AlwaysTemplate)
-    ibLogo.tintColor = .whiteColor()
+    let image = AzIcon.iconLogoAzme(85).image(with: CGSize(width: 60, height: 85))
+    ibLogo.image = image?.withRenderingMode(.alwaysTemplate)
+    ibLogo.tintColor = .white
     
-    ibTopView.backgroundColor = UIColor(named: UIColor.Name.PrimaryTheme)
+    ibTopView.backgroundColor = UIColor(named: UIColor.Name.primaryTheme)
     ibTableView.alwaysBounceVertical = false
-    ibTableView.separatorStyle = .None
+    ibTableView.separatorStyle = .none
     ibTableView.rowHeight = UITableViewAutomaticDimension
     ibTableView.estimatedRowHeight = 60
-    ibTableView.registerNib(UINib(nibName: TextFeedCell.identifier, bundle: nil),
+    ibTableView.register(UINib(nibName: TextFeedCell.identifier, bundle: nil),
       forCellReuseIdentifier: TextFeedCell.identifier)
-    ibTableView.registerNib(UINib(nibName: HighlightCell.identifier, bundle: nil),
+    ibTableView.register(UINib(nibName: HighlightCell.identifier, bundle: nil),
       forCellReuseIdentifier: HighlightCell.identifier)
     
     self.reloadData()
@@ -62,23 +62,23 @@ class HomeViewController: CenterViewController {
   Reload current data like recent updates
   Note : _be sure to empty the dataSource if a refreshControl is going to be set_
   */
-  private func reloadData(){
+  fileprivate func reloadData(){
     UIApplication.showHUD()
     AzMEService.fetchAzMERecentUpdates(forHome: true) { (channels, error) -> Void in
       UIApplication.dismissHUD()
       
       let sectionUpdates = HomeSection(title: L10n.tr("home.recent.updates.title"),
-        titleColor: UIColor(named: UIColor.Name.PrimaryTheme),
-        bgColor: UIColor(named: UIColor.Name.SecondaryGrey),
+        titleColor: UIColor(named: UIColor.Name.primaryTheme),
+        bgColor: UIColor(named: UIColor.Name.secondaryGrey),
         buttonTitle: L10n.tr("home.recent.updates.view.all"),
         action: {
           
       })
       
-      self.dataSource.sections.insert((sectionUpdates, channels), atIndex: 0)
+      self.dataSource.sections.insert((sectionUpdates, channels), at: 0)
       self.ibTableView.beginUpdates()
-      self.ibTableView.insertSections(NSIndexSet(index: 0),
-        withRowAnimation: UITableViewRowAnimation.Fade)
+      self.ibTableView.insertSections(IndexSet(integer: 0),
+        with: UITableViewRowAnimation.fade)
       self.ibTableView.endUpdates()
     }
   }
@@ -87,42 +87,42 @@ class HomeViewController: CenterViewController {
    Change the tableview background color according to its offset.
    This enable the behavior to have the tableFooterView with an "infinite" height (same colors)
    */
-  private func changeBackgroundAccordingToOffset(){
+  fileprivate func changeBackgroundAccordingToOffset(){
     if ibTableView.contentOffset.y < 0{
-      self.ibTableView.backgroundColor = UIColor(named: UIColor.Name.SecondaryGrey)
+      self.ibTableView.backgroundColor = UIColor(named: UIColor.Name.secondaryGrey)
     }else{
-      self.ibTableView.backgroundColor = UIColor(named: UIColor.Name.SecondaryOrange)
+      self.ibTableView.backgroundColor = UIColor(named: UIColor.Name.secondaryOrange)
     }
   }
 }
 
 //MARK: UIScrollViewDelegate
 extension HomeViewController: UIScrollViewDelegate{
-  func scrollViewDidScroll(scrollView: UIScrollView) {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
     self.changeBackgroundAccordingToOffset()
   }
 }
 
 //MARK: UITableViewDataSource
 extension HomeViewController: UITableViewDataSource {
-  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  func numberOfSections(in tableView: UITableView) -> Int {
     return dataSource.sections.count
   }
   
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return dataSource.sections[section].items.count
   }
   
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
     if let channel = dataSource.sections[indexPath.section].items[indexPath.row] as? RecentUpdate{
-      let cell = tableView.dequeueReusableCellWithIdentifier(TextFeedCell.identifier, forIndexPath: indexPath) as! TextFeedCell
+      let cell = tableView.dequeueReusableCell(withIdentifier: TextFeedCell.identifier, for: indexPath) as! TextFeedCell
       cell.updateWith(channel.title, subTitle: channel.pubDate, description: channel.description)
       
       return cell
     }
     else if let highligthTitle = dataSource.sections[indexPath.section].items[indexPath.row] as? String{
-      let cell = tableView.dequeueReusableCellWithIdentifier(HighlightCell.identifier, forIndexPath: indexPath) as! HighlightCell
+      let cell = tableView.dequeueReusableCell(withIdentifier: HighlightCell.identifier, for: indexPath) as! HighlightCell
       
       cell.updateWith(highligthTitle)
       
@@ -136,34 +136,34 @@ extension HomeViewController: UITableViewDataSource {
 //MARK: UITableViewDelegate
 extension HomeViewController: UITableViewDelegate {
   
-  func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+  func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
     return indexPath.section != 1
   }
   
-  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
-    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    tableView.deselectRow(at: indexPath, animated: true)
     
     //open link
     if let channel = dataSource.sections[indexPath.section].items[indexPath.row] as? RecentUpdate,
-      channelLink = channel.link
+      let channelLink = channel.link
     {
       AnalyticsMonitor.Events.Home.clickArticleHome(channel.title, URL: channelLink)
-      let webController = AzMESafariController(URL: NSURL(string: channelLink)!)
+      let webController = AzMESafariController(url: URL(string: channelLink)!)
       webController.delegate = self
       
-      self.navigationController?.presentViewController(webController, animated: true, completion: { () -> Void in
-        UIApplication.setStatusBarStyle(.Default)
+      self.navigationController?.present(webController, animated: true, completion: { () -> Void in
+        UIApplication.setStatusBarStyle(.default)
       })
     }
     
   }
   
-  func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     return 1
   }
   
-  func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let headerView = FeedHeader(frame: CGRect(x: 0, y: 0, width: Int(self.view.frame.size.width), height: kHeaderHeight))
     
     let section =  dataSource.sections[section].section
@@ -181,7 +181,7 @@ extension HomeViewController: UITableViewDelegate {
     
   }
   
-  func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return CGFloat(kHeaderHeight)
   }
   
@@ -189,7 +189,7 @@ extension HomeViewController: UITableViewDelegate {
 
 //MARK: SFSafariViewControllerDelegate
 extension HomeViewController: SFSafariViewControllerDelegate{
-  func safariViewControllerDidFinish(controller: SFSafariViewController) {
-    UIApplication.setStatusBarStyle(.LightContent)
+  func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+    UIApplication.setStatusBarStyle(.lightContent)
   }
 }
